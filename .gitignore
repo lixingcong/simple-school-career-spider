@@ -1,0 +1,7 @@
+*.pyc
+*.o
+.#*
+.project
+.pydevproject
+.settings/
+my_mail_accounts.py
