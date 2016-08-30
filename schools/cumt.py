@@ -7,19 +7,19 @@ Created on 2016年8月30日
 '''
 from bs4 import BeautifulSoup
 import requests
-from schools.base import school_base
+from schools.school_base import SCHOOL_BASE
 
-class school_cumt(school_base):
+class SCHOOL_CUMT(SCHOOL_BASE):
 	def open_url_and_get_page(self):
 		if self.isFromLocal is False:
-			conn=requests.get(self.host+self.url, headers=self.header)
-			self.content_original=conn.content
+			conn = requests.get(self.host + self.url, headers=self.header)
+			self.content_original = conn.content
 		else:
-			with open('/tmp/req.html','rb') as f:
-				self.content_original=f.read().decode('utf-8')
+			with open('/tmp/req.html', 'rb') as f:
+				self.content_original = f.read().decode('utf-8')
 				
-	def format_date(self, input_string,split_symbol):
-		t=input_string
+	def format_date(self, input_string, split_symbol):
+		t = input_string
 		if t[-2] == split_symbol:
 			t = t[:-1] + '0' + t[-1]
 		if t[-5] == split_symbol:
@@ -29,18 +29,18 @@ class school_cumt(school_base):
 				
 	def recursive_get_each_entry(self):
 		if self.content_original:
-			res=BeautifulSoup(self.content_original,"html.parser")
+			res = BeautifulSoup(self.content_original, "html.parser")
 			list1 = res.find_all('ul', {'class':'infoList teachinList'})
 			for i in list1:
 				fuck = BeautifulSoup(str(i), 'lxml')
 				list_each_course = list(fuck.find_all('li'))
 				list_one = []
-				list_one.append(list_each_course[0].a['href'].strip())   # 链接
-				list_one.append(list_each_course[0].a.string.strip())   # 企业名
-				list_one.append(list_each_course[3].string.strip())   # 公教地点
-				date_ = (list_each_course[4].string[:10].strip())   # 日期
+				list_one.append(list_each_course[0].a['href'].strip())  # 链接
+				list_one.append(list_each_course[0].a.string.strip())  # 企业名
+				list_one.append(list_each_course[3].string.strip())  # 公教地点
+				date_ = (list_each_course[4].string[:10].strip())  # 日期
 				list_one.append(self.format_date(date_, '-'))
-				list_one.append(list_each_course[4].string[10:].strip())   # 时间
+				list_one.append(list_each_course[4].string[10:].strip())  # 时间
 				# if exists then add to dict
 				if list_one[3] in self.dict_all.iterkeys():
 					self.dict_all[list_one[3]].append(list_one)
@@ -51,7 +51,7 @@ class school_cumt(school_base):
 					
 	def convert_to_table(self):
 		if self.dict_all == {}:
-			self.content= u'<p>抓取内容为空</p>'
+			self.content = u'<p>抓取内容为空</p>'
 		else:
 			self.content += u'<table>'
 			for list1 in sorted(self.dict_all.iterkeys()):
@@ -68,11 +68,11 @@ class school_cumt(school_base):
 			self.content += u'</table>'
 		
 if __name__ == '__main__':
-	c=school_cumt(u"中国矿业大学",u'http://jyzd.cumt.edu.cn',u'/teachin?time=60',isFromLocal=True)		
+	c = SCHOOL_CUMT(u"中国矿业大学", u'http://jyzd.cumt.edu.cn', u'/teachin?time=60', isFromLocal=True)		
 	c.open_url_and_get_page()
 	c.recursive_get_each_entry()
 	c.convert_to_table()
 	content = u'<html><head><meta charset="utf-8"><style>table, th, td { border: 1px solid #99cccc; text-align: left;}</style></head><body><h2>未来七日宣讲会</h2>'
-	content+=c.get_HTML()
+	content += c.get_HTML()
 	content += u'<p>由<a href="http://lixingcong.github.io">Lixingcong</a>使用python强力驱动</p></body></html>' 
 	print content
