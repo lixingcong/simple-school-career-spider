@@ -35,6 +35,9 @@ class SCHOOL_BASE(object):
 	
 	def get_HTML(self):
 		# return processed HTML content
+		self.open_url_and_get_page()
+		self.recursive_get_each_entry()
+		self.convert_to_table()
 		return self.content
 	
 	

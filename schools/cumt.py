@@ -50,8 +50,9 @@ class SCHOOL_CUMT(SCHOOL_BASE):
 					self.dict_all[list_one[3]] = list_to_insert
 					
 	def convert_to_table(self):
+		self.content += (u'<h3>' + self.title + u'</h3>')
 		if self.dict_all == {}:
-			self.content = u'<p>抓取内容为空</p>'
+			self.content += u'<p>抓取内容为空</p>'
 		else:
 			self.content += u'<table>'
 			for list1 in sorted(self.dict_all.iterkeys()):
@@ -68,10 +69,7 @@ class SCHOOL_CUMT(SCHOOL_BASE):
 			self.content += u'</table>'
 		
 if __name__ == '__main__':
-	c = SCHOOL_CUMT(u"中国矿业大学", u'http://jyzd.cumt.edu.cn', u'/teachin?time=60', isFromLocal=True)		
-	c.open_url_and_get_page()
-	c.recursive_get_each_entry()
-	c.convert_to_table()
+	c = SCHOOL_CUMT(u"中国矿业大学", u'http://jyzd.cumt.edu.cn', u'/teachin?time=60', isFromLocal=False)		
 	content = u'<html><head><meta charset="utf-8"><style>table, th, td { border: 1px solid #99cccc; text-align: left;}</style></head><body><h2>未来七日宣讲会</h2>'
 	content += c.get_HTML()
 	content += u'<p>由<a href="http://lixingcong.github.io">Lixingcong</a>使用python强力驱动</p></body></html>' 
