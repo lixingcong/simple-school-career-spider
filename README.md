@@ -31,6 +31,7 @@
 
 	sudo pip install beautifulsoup4
 	sudo pip install lxml
+	sudo pip install requests
 	
 单学校运行(以南大为例)
 
@@ -44,6 +45,9 @@
 	cp my_mail_accounts_example.py my_mail_accounts.py
 	# 填入邮箱帐号
 	vi my_mail_accounts.py
+	# 发送和邮件
+	python main.py
+	python main_send_mail.py
 
 可以修改crontab支持定时投递
 
