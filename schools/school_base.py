@@ -4,11 +4,10 @@
 import requests
 
 class SCHOOL_BASE(object):
-	def __init__(self, title, host, url, encode=None, isFromLocal=False):
+	def __init__(self, title, host, url, isFromLocal=False):
 		self.title = title
 		self.host = host
 		self.url = url
-		self.encode = encode
 		self.content_original = ''
 		self.content = ''
 		self.header = {

@@ -10,8 +10,8 @@ import requests
 from schools.school_base import SCHOOL_BASE
 
 class SCHOOL_NJU(SCHOOL_BASE):
-	def __init__(self, title, host, url, encode=None, isFromLocal=False):
-		SCHOOL_BASE.__init__(self, title, host, url, encode=encode, isFromLocal=isFromLocal)
+	def __init__(self, isFromLocal=False):
+		SCHOOL_BASE.__init__(self, u'南京大学', u'http://job.nju.edu.cn:9081', u'', isFromLocal=isFromLocal)
 		self.begin_date = ''
 		self.end_date = ''
 		
@@ -92,7 +92,7 @@ class SCHOOL_NJU(SCHOOL_BASE):
 
 		
 if __name__ == '__main__':
-	obj = SCHOOL_NJU(u'南京大学', u'http://job.nju.edu.cn:9081', u'', isFromLocal=False)
+	obj = SCHOOL_NJU(isFromLocal=False)
 	content = u'<html><head><meta charset="utf-8"><style>table, th, td { border: 1px solid #99cccc; text-align: left;}</style></head><body><h2>未来七日宣讲会</h2>'
 	content += obj.get_HTML()
 	content += u'<p>由<a href="http://lixingcong.github.io">Lixingcong</a>使用python强力驱动</p></body></html>' 

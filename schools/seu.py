@@ -8,10 +8,11 @@ Created on 2016年9月1日
 from schools.template_91job_gov_cn import SCHOOL_91JOB_GOV_CN
 
 class SCHOOL_SEU(SCHOOL_91JOB_GOV_CN):
-	pass
+	def __init__(self, isFromLocal=False):
+		SCHOOL_91JOB_GOV_CN.__init__(self, u"东南大学", u'http://seu.91job.gov.cn', u'/teachin?time=14', isFromLocal=isFromLocal)
 
 if __name__ == '__main__':
-	c = SCHOOL_SEU(u"东南大学", u'http://seu.91job.gov.cn', u'/teachin?time=14', isFromLocal=False)		
+	c = SCHOOL_SEU(isFromLocal=False)		
 	content = u'<html><head><meta charset="utf-8"><style>table, th, td { border: 1px solid #99cccc; text-align: left;}</style></head><body><h2>未来七日宣讲会</h2>'
 	content += c.get_HTML()
 	content += u'<p>由<a href="http://lixingcong.github.io">Lixingcong</a>使用python强力驱动</p></body></html>' 
