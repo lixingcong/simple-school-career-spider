@@ -12,21 +12,36 @@
 - 上海大学
 - 上海交通大学
 
+## 例子
+
+添加环境变量
+
+	vi ~/.bashrc
+	export PYTHONPATH=.:$PYTHONPATH
+
+使环境变量立即生效
+
+	source ~/.bashrc
+
 安装依赖
 
 	sudo pip install beautifulsoup4
 	sudo pip install lxml
 	
-运行(以南大为例)
+单学校运行(以南大为例)
 
 	python schools/nju.py
-	
+
+## 投递邮件
+
 编写合适的```main.py```和```my_mail_accounts.py```，可以实现抓取多个学校并发送到指定邮箱
 
 	cd my_mail
 	cp my_mail_accounts_example.py my_mail_accounts.py
 	# 填入邮箱帐号
 	vi my_mail_accounts.py
+
+可以修改crontab支持定时投递
 
 ## TODO
 
