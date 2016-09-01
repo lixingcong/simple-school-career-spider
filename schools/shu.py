@@ -12,7 +12,7 @@ from bs4 import BeautifulSoup
 class SCHOOL_SHU(SCHOOL_BASE):
 	def __init__(self, isFromLocal=False):
 		SCHOOL_BASE.__init__(self, u'上海大学', u'http://zbb.shu.edu.cn', u'http://zbb.shu.edu.cn/PositionList.aspx', isFromLocal=isFromLocal)
-		self.header['X-MicrosoftAjax'] = 'Delta = true'
+		self.header['X-MicrosoftAjax'] = 'Delta=true'
 		self.header['X-Requested-With'] = 'XMLHttpRequest'
 		self.payload = {
 			'__VIEWSTATEGENERATOR':'',
