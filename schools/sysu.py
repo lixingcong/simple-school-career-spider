@@ -9,6 +9,7 @@ from schools.school_base import SCHOOL_BASE
 import requests
 from bs4 import BeautifulSoup
 import datetime
+import re
 
 class SCHOOL_SYSU(SCHOOL_BASE):
 	def __init__(self, isFromLocal=False):
@@ -21,6 +22,7 @@ class SCHOOL_SYSU(SCHOOL_BASE):
 			'__EVENTTARGET': '',
 			'__EVENTARGUMENT': ''
 		}
+		self.re_program=re.compile('')
 		
 	def open_url_and_get_page(self):
 		if self.isFromLocal is False:
@@ -55,23 +57,67 @@ class SCHOOL_SYSU(SCHOOL_BASE):
 				hold_date_datetime_object=today.replace(month=int(hold_date[:2]),day=int(hold_date[-2:]))
 				if hold_date_datetime_object<today:
 					break
-				# time
-				print self.format_time(date_and_time[1],':')
 				
-				# fake link, TODO
-				print tds[0].a['href']
+				# fake link
+				fake_link=tds[0].a['href']
+				try:
+					good_link=self.get_real_link(fake_link)
+				except:
+					continue
+				if good_link is None:
+					continue
+				
+				# date
+				list_one.append(hold_date)
 				# job name
-				print tds[0].a.string.strip()
+				list_one.append(tds[0].a.string.strip())
 				# location
-				print tds[2].span.string.strip()
+				list_one.append(tds[2].span.string.strip())
+				# time
+				list_one.append(self.format_time(date_and_time[1],':'))
+				# real link
+				list_one.append(good_link)
 				
+				# if exists then add to dict
+				if list_one[0] in self.dict_all.iterkeys():  # if date exsit
+					self.dict_all[list_one[0]].append(list_one)
+				else:
+					list_to_insert = []
+					list_to_insert.append(list_one)
+					self.dict_all[list_one[0]] = list_to_insert
 				
+	def convert_to_table(self):
+		self.content += (u'<h3>' + self.title + u'</h3>')
+		if self.dict_all == {}:
+			self.content += u'<p>抓取内容为空</p>'
+		else:
+			self.content += u'<table>'
+			for list1 in sorted(self.dict_all.iterkeys()):
+				len1 = len(self.dict_all[list1])
+				is_firstline = True
+				self.content += u'<tr><th rowspan="' + str(len1) + u'">' + list1 + u'</th>'
+				for i in self.dict_all[list1]:
+					if is_firstline == False:
+						self.content += u'<tr>'
+					self.content += u'<th><a href="' + self.host + i[4] + u'">' + i[1] + u'</a></th>'
+					self.content += u'<th>' + i[2] + u'</th>'
+					self.content += u'<th>' + i[3] + u'</th></tr>'
+					is_firstline = False
+			self.content += u'</table>'
 
 	def get_real_link(self, input_string):
 		# input string should be like this:
 		# javascript:__doPostBack('ctl00$ContentPlaceHolder1$GridView1$ctl03$hplAction','')
 		splited_str = input_string.split('\'')
-		print splited_str
+		self.payload['__EVENTTARGET']=splited_str[1]
+		conn = requests.post(self.url, headers=self.header, timeout=60, data=self.payload)
+		partern = re.compile("/\(S\(.*\)\)(.*)\|")
+		result = partern.findall(conn.content)
+		if result:
+			return result[0]
+		else:
+			return None
+		
 		
 	def format_date(self, input_string, split_symbol):
 		t = input_string
@@ -85,9 +131,11 @@ class SCHOOL_SYSU(SCHOOL_BASE):
 		return input_string[:-3]
 		
 if __name__ == '__main__':
-	obj=SCHOOL_SYSU(True)
-	obj.open_url_and_get_page()
-	obj.recursive_get_each_entry()
+	obj=SCHOOL_SYSU(False)
+	content = u'<html><head><meta charset="utf-8"><style>table, th, td { border: 1px solid #99cccc; text-align: left;}</style></head><body><h2>未来七日宣讲会</h2>'
+	content += obj.get_HTML()
+	content += u'<p>由<a href="http://lixingcong.github.io">Lixingcong</a>使用python强力驱动</p></body></html>'
+	print content
 
 
 
