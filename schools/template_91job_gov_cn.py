@@ -4,11 +4,13 @@
 '''
 Created on 2016年8月30日
 @author: li
+
+这个是91job.gov.cn网站模板，适用于江苏省大多数高校
 '''
 from bs4 import BeautifulSoup
 from schools.school_base import SCHOOL_BASE
 
-class SCHOOL_CUMT(SCHOOL_BASE):
+class SCHOOL_91JOB_GOV_CN(SCHOOL_BASE):
 			
 	def format_time(self, input_string, split_symbol):
 		t = input_string
@@ -61,7 +63,7 @@ class SCHOOL_CUMT(SCHOOL_BASE):
 			self.content += u'</table>'
 		
 if __name__ == '__main__':
-	c = SCHOOL_CUMT(u"中国矿业大学", u'http://jyzd.cumt.edu.cn', u'/teachin?time=14', isFromLocal=False)		
+	c = SCHOOL_91JOB_GOV_CN(u"中国矿业大学", u'http://jyzd.cumt.edu.cn', u'/teachin?time=14', isFromLocal=False)		
 	content = u'<html><head><meta charset="utf-8"><style>table, th, td { border: 1px solid #99cccc; text-align: left;}</style></head><body><h2>未来七日宣讲会</h2>'
 	content += c.get_HTML()
 	content += u'<p>由<a href="http://lixingcong.github.io">Lixingcong</a>使用python强力驱动</p></body></html>' 

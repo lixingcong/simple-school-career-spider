@@ -5,7 +5,7 @@
 Created on 2016年8月30日
 @author: li
 '''
-from schools.cumt import SCHOOL_CUMT
+from schools.template_91job_gov_cn import SCHOOL_91JOB_GOV_CN
 from schools.njust import SCHOOL_NJUST
 from schools.njupt import SCHOOL_NJUPT
 
@@ -24,7 +24,7 @@ if __name__ == '__main__':
 	result_list=[]
 	# TODO: 多线程抓取，重写add_serval_school_toHTML函数
 	'''
-	cumt = SCHOOL_CUMT(u"中国矿业大学", u'http://jyzd.cumt.edu.cn', u'/teachin?time=60', isFromLocal=False)		
+	cumt = SCHOOL_91JOB_GOV_CN(u"中国矿业大学", u'http://jyzd.cumt.edu.cn', u'/teachin?time=60', isFromLocal=False)		
 	result_list.append(cumt)
 	
 	njupt=SCHOOL_NJUPT(u'南京邮电大学',u'http://njupt.91job.gov.cn', u'/teachin?time=7')

@@ -5,9 +5,9 @@
 Created on 2016年8月30日
 @author: li
 '''
-from schools.cumt import SCHOOL_CUMT
+from schools.template_91job_gov_cn import SCHOOL_91JOB_GOV_CN
 
-class SCHOOL_NJUST(SCHOOL_CUMT):
+class SCHOOL_NJUST(SCHOOL_91JOB_GOV_CN):
 	pass
 
 if __name__ == '__main__':
