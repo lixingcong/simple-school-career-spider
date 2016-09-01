@@ -10,7 +10,7 @@ from schools.school_base import SCHOOL_BASE
 
 class SCHOOL_CUMT(SCHOOL_BASE):
 			
-	def format_date(self, input_string, split_symbol):
+	def format_time(self, input_string, split_symbol):
 		t = input_string
 		if t[-2] == split_symbol:
 			t = t[:-1] + '0' + t[-1]
@@ -31,7 +31,7 @@ class SCHOOL_CUMT(SCHOOL_BASE):
 				list_one.append(list_each_course[0].a.string.strip())  # 企业名
 				list_one.append(list_each_course[3].string.strip())  # 公教地点
 				date_ = (list_each_course[4].string[:10].strip())  # 日期
-				list_one.append(self.format_date(date_, '-'))
+				list_one.append(self.format_time(date_, '-'))
 				list_one.append(list_each_course[4].string[10:].strip())  # 时间
 				# if exists then add to dict
 				if list_one[3] in self.dict_all.iterkeys():

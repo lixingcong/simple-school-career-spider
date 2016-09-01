@@ -33,8 +33,12 @@ class SCHOOL_BASE(object):
 		# get each page and add to self.content
 		pass
 	
+	def format_time(self, input_string, split_symbol):
+		# format time to HH:MM
+		pass
+	
 	def format_date(self, input_string, split_symbol):
-		# format data to MM:DD HH:MM:SS
+		# format data to YYYY-MM-DD
 		pass
 	
 	def convert_to_table(self):
