@@ -75,7 +75,7 @@ class SCHOOL_NJU(SCHOOL_BASE):
 	def calc_delta_date(self):
 		from datetime import datetime, timedelta  		
 		now = datetime.now()  
-		now_delta_10days = now + timedelta(days=10)
+		now_delta_10days = now + timedelta(days=14)
 		yesterday = now - timedelta(days=1)
 		self.end_date = now_delta_10days.strftime("%Y-%m-%d")
 		self.begin_date = yesterday.strftime("%Y-%m-%d")

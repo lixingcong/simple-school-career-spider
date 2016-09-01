@@ -8,6 +8,7 @@ Created on 2016年8月30日
 from schools.template_91job_gov_cn import SCHOOL_91JOB_GOV_CN
 from schools.njust import SCHOOL_NJUST
 from schools.njupt import SCHOOL_NJUPT
+from schools.cumt import SCHOOL_CUMT
 
 def add_serval_school_to_HTML_body(input_school_list):
 	if input_school_list is not None:
@@ -21,18 +22,11 @@ def add_serval_school_to_HTML_body(input_school_list):
 	return None
 	
 if __name__ == '__main__':
-	result_list=[]
+	school_list = []
 	# TODO: 多线程抓取，重写add_serval_school_toHTML函数
-	'''
-	cumt = SCHOOL_91JOB_GOV_CN(u"中国矿业大学", u'http://jyzd.cumt.edu.cn', u'/teachin?time=60', isFromLocal=False)		
-	result_list.append(cumt)
 	
-	njupt=SCHOOL_NJUPT(u'南京邮电大学',u'http://njupt.91job.gov.cn', u'/teachin?time=7')
-	result_list.append(njupt)
+	school_list.append(SCHOOL_CUMT())
+	school_list.append(SCHOOL_NJUPT())
+	school_list.append(SCHOOL_NJUST())
 	
-	njust=SCHOOL_NJUST(u'南京理工大学',u'http://njust.91job.gov.cn', u'/teachin?time=7')
-	result_list.append(njust)
-	'''
-	
-	
-	print add_serval_school_to_HTML_body(result_list)
+	print add_serval_school_to_HTML_body(school_list)
