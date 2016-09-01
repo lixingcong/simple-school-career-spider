@@ -81,6 +81,8 @@ class SCHOOL_NJU(SCHOOL_BASE):
 		self.begin_date = yesterday.strftime("%Y-%m-%d")
 		
 	def format_time(self, input_string, split_symbol):
+		if len(input_string) < 3:
+			return u'?'
 		t = input_string.split('-')[0]  # get 18:00 from 18:00-23:00
 		if t[-2] == split_symbol:
 			t = t[:-1] + '0' + t[-1]
