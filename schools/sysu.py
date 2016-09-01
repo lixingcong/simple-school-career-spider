@@ -22,11 +22,11 @@ class SCHOOL_SYSU(SCHOOL_BASE):
 			'__EVENTTARGET': '',
 			'__EVENTARGUMENT': ''
 		}
-		self.re_program=re.compile('')
+		self.re_program = re.compile("/\(S\(.*\)\)(.*)\|")
 		
 	def open_url_and_get_page(self):
 		if self.isFromLocal is False:
-			conn = requests.get(self.host+self.url, headers=self.header, timeout=60)
+			conn = requests.get(self.host + self.url, headers=self.header, timeout=60)
 			res = BeautifulSoup(conn.content, "html.parser")			
 
 			self.payload["__EVENTVALIDATION"] = res.select("#__EVENTVALIDATION")[0]["value"]
@@ -45,23 +45,23 @@ class SCHOOL_SYSU(SCHOOL_BASE):
 			res = BeautifulSoup(self.content_original, "html.parser")
 			table_original = res.find('table', {'class':'grid pager'})
 			
-			today=datetime.datetime.today()
+			today = datetime.datetime.today()
 			trs = table_original.find_all('tr')
 			for tr in trs[3:]:
 				list_one = []
 				tds = list(tr.find_all('td'))
-				date_and_time=tds[1].span.string.strip().split()
+				date_and_time = tds[1].span.string.strip().split()
 				# date comparasion
 				# http://stackoverflow.com/questions/1831410/python-time-comparison
-				hold_date=self.format_date(date_and_time[0],'/')
-				hold_date_datetime_object=today.replace(month=int(hold_date[:2]),day=int(hold_date[-2:]))
-				if hold_date_datetime_object<today:
+				hold_date = self.format_date(date_and_time[0], '/')
+				hold_date_datetime_object = today.replace(month=int(hold_date[:2]), day=int(hold_date[-2:]))
+				if hold_date_datetime_object < today:
 					break
 				
 				# fake link
-				fake_link=tds[0].a['href']
+				fake_link = tds[0].a['href']
 				try:
-					good_link=self.get_real_link(fake_link)
+					good_link = self.get_real_link(fake_link)
 				except:
 					continue
 				if good_link is None:
@@ -74,7 +74,7 @@ class SCHOOL_SYSU(SCHOOL_BASE):
 				# location
 				list_one.append(tds[2].span.string.strip())
 				# time
-				list_one.append(self.format_time(date_and_time[1],':'))
+				list_one.append(self.format_time(date_and_time[1], ':'))
 				# real link
 				list_one.append(good_link)
 				
@@ -109,10 +109,9 @@ class SCHOOL_SYSU(SCHOOL_BASE):
 		# input string should be like this:
 		# javascript:__doPostBack('ctl00$ContentPlaceHolder1$GridView1$ctl03$hplAction','')
 		splited_str = input_string.split('\'')
-		self.payload['__EVENTTARGET']=splited_str[1]
+		self.payload['__EVENTTARGET'] = splited_str[1]
 		conn = requests.post(self.url, headers=self.header, timeout=60, data=self.payload)
-		partern = re.compile("/\(S\(.*\)\)(.*)\|")
-		result = partern.findall(conn.content)
+		result = self.re_program.findall(conn.content)
 		if result:
 			return result[0]
 		else:
@@ -131,7 +130,7 @@ class SCHOOL_SYSU(SCHOOL_BASE):
 		return input_string[:-3]
 		
 if __name__ == '__main__':
-	obj=SCHOOL_SYSU(False)
+	obj = SCHOOL_SYSU(False)
 	content = u'<html><head><meta charset="utf-8"><style>table, th, td { border: 1px solid #99cccc; text-align: left;}</style></head><body><h2>未来七日宣讲会</h2>'
 	content += obj.get_HTML()
 	content += u'<p>由<a href="http://lixingcong.github.io">Lixingcong</a>使用python强力驱动</p></body></html>'
