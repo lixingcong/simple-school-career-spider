@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-
+import requests
 
 class SCHOOL_BASE(object):
 	def __init__(self, title, host, url, encode=None, isFromLocal=False):
@@ -11,14 +11,22 @@ class SCHOOL_BASE(object):
 		self.encode = encode
 		self.content_original = ''
 		self.content = ''
-		self.header = {'User-Agent':u'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:38.0) Gecko/20100101 Firefox/38.0',
-          'Referer':self.host
-          }
+		self.header = {
+					'User-Agent':u'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:38.0) Gecko/20100101 Firefox/38.0',
+          			'Referer':self.host,
+         	   		'Accept-Language':u'zh-CN,zh;q=0.8,en-US;q=0.6,en;q=0.4'
+    	 	   		}
 		self.isFromLocal = isFromLocal
 		self.dict_all = {}
 		
 	def open_url_and_get_page(self):
 		# open page and it should be decoded here
+		if self.isFromLocal is False:
+			conn = requests.get(self.host + self.url, headers=self.header)
+			self.content_original = conn.content
+		else:
+			with open('/tmp/req.html', 'rb') as f:
+				self.content_original = f.read().decode('utf-8')
 		pass
 	
 	def recursive_get_each_entry(self):

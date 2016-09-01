@@ -6,18 +6,10 @@ Created on 2016年8月30日
 @author: li
 '''
 from bs4 import BeautifulSoup
-import requests
 from schools.school_base import SCHOOL_BASE
 
 class SCHOOL_CUMT(SCHOOL_BASE):
-	def open_url_and_get_page(self):
-		if self.isFromLocal is False:
-			conn = requests.get(self.host + self.url, headers=self.header)
-			self.content_original = conn.content
-		else:
-			with open('/tmp/req.html', 'rb') as f:
-				self.content_original = f.read().decode('utf-8')
-				
+			
 	def format_date(self, input_string, split_symbol):
 		t = input_string
 		if t[-2] == split_symbol:
