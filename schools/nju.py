@@ -40,7 +40,7 @@ class SCHOOL_NJU(SCHOOL_BASE):
 				tmp_strings = res_positions[index].string.split()
 				list_one.append(tmp_strings[0])
 				list_one.append(tmp_strings[1])
-				list_one.append(self.format_time(tmp_strings[2], ':'))				
+				list_one.append(tmp_strings[2])				
 				
 				# if exists then add to dict
 				if list_one[3] in self.dict_all.iterkeys():
@@ -80,16 +80,6 @@ class SCHOOL_NJU(SCHOOL_BASE):
 		self.end_date = now_delta_10days.strftime("%Y-%m-%d")
 		self.begin_date = yesterday.strftime("%Y-%m-%d")
 		
-	def format_time(self, input_string, split_symbol):
-		if len(input_string) < 3:
-			return u'?'
-		t = input_string.split('-')[0]  # get 18:00 from 18:00-23:00
-		if t[-2] == split_symbol:
-			t = t[:-1] + '0' + t[-1]
-		if t[-5] == split_symbol:
-			t = t[:-4] + '0' + t[-4:]
-		return t	
-
 		
 if __name__ == '__main__':
 	obj = SCHOOL_NJU(isFromLocal=False)
