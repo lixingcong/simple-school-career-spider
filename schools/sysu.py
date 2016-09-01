@@ -8,7 +8,7 @@ Created on 2016年9月1日
 from schools.school_base import SCHOOL_BASE
 import requests
 from bs4 import BeautifulSoup
-from wsgiref.handlers import format_date_time
+import datetime
 
 class SCHOOL_SYSU(SCHOOL_BASE):
 	def __init__(self, isFromLocal=False):
@@ -43,24 +43,29 @@ class SCHOOL_SYSU(SCHOOL_BASE):
 			res = BeautifulSoup(self.content_original, "html.parser")
 			table_original = res.find('table', {'class':'grid pager'})
 			
-			import time
+			today=datetime.datetime.today()
 			trs = table_original.find_all('tr')
 			for tr in trs[3:]:
 				list_one = []
 				tds = list(tr.find_all('td'))
+				date_and_time=tds[1].span.string.strip().split()
+				# date comparasion
+				# http://stackoverflow.com/questions/1831410/python-time-comparison
+				hold_date=self.format_date(date_and_time[0],'/')
+				hold_date_datetime_object=today.replace(month=int(hold_date[:2]),day=int(hold_date[-2:]))
+				if hold_date_datetime_object<today:
+					break
+				# time
+				print self.format_time(date_and_time[1],':')
+				
 				# fake link, TODO
 				print tds[0].a['href']
 				# job name
 				print tds[0].a.string.strip()
-				# date and time
-				date_and_time=tds[1].span.string.strip().split()
-				print self.format_date(date_and_time[0],'/')
-				print self.format_time(date_and_time[1],':')
 				# location
 				print tds[2].span.string.strip()
-				# date comparasion
-				# http://stackoverflow.com/questions/1831410/python-time-comparison
-				break
+				
+				
 
 	def get_real_link(self, input_string):
 		# input string should be like this:
@@ -77,12 +82,7 @@ class SCHOOL_SYSU(SCHOOL_BASE):
 		return t[5:]
 	
 	def format_time(self, input_string, split_symbol):
-		t = input_string[:-3]
-		if t[-2] == split_symbol:
-			t = t[:-1] + '0' + t[-1]
-		if t[-5] == split_symbol:
-			t = t[:-4] + '0' + t[-4:]
-		return t
+		return input_string[:-3]
 		
 if __name__ == '__main__':
 	obj=SCHOOL_SYSU(True)
