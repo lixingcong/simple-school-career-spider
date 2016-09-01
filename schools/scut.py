@@ -6,7 +6,6 @@ Created on 2016年9月2日
 @author: li
 '''
 from schools.school_base import SCHOOL_BASE
-import requests
 from bs4 import BeautifulSoup
 
 class SCHOOL_SCUT(SCHOOL_BASE):
