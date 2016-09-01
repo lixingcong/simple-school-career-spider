@@ -8,6 +8,7 @@ Created on 2016年9月1日
 from schools.school_base import SCHOOL_BASE
 import requests
 from bs4 import BeautifulSoup
+from wsgiref.handlers import format_date_time
 
 class SCHOOL_SYSU(SCHOOL_BASE):
 	def __init__(self, isFromLocal=False):
@@ -36,8 +37,84 @@ class SCHOOL_SYSU(SCHOOL_BASE):
 		else:
 			with open('/tmp/req.html', 'rb') as f:
 				self.content_original = f.read().decode('utf-8')
-		print self.content_original
 	
+	def recursive_get_each_entry(self):
+		if self.content_original:
+			res = BeautifulSoup(self.content_original, "html.parser")
+			table_original = res.find('table', {'class':'grid pager'})
+			
+			import time
+			trs = table_original.find_all('tr')
+			for tr in trs[3:]:
+				list_one = []
+				tds = list(tr.find_all('td'))
+				# fake link, TODO
+				print tds[0].a['href']
+				# job name
+				print tds[0].a.string.strip()
+				# date and time
+				date_and_time=tds[1].span.string.strip().split()
+				print self.format_date(date_and_time[0],'/')
+				print self.format_time(date_and_time[1],':')
+				# location
+				print tds[2].span.string.strip()
+				# date comparasion
+				# http://stackoverflow.com/questions/1831410/python-time-comparison
+				break
+
+	def get_real_link(self, input_string):
+		# input string should be like this:
+		# javascript:__doPostBack('ctl00$ContentPlaceHolder1$GridView1$ctl03$hplAction','')
+		splited_str = input_string.split('\'')
+		print splited_str
+		
+	def format_date(self, input_string, split_symbol):
+		t = input_string
+		if t[-2] == split_symbol:
+			t = t[:-1] + '0' + t[-1]
+		if t[-5] == split_symbol:
+			t = t[:-4] + '0' + t[-4:]
+		return t[5:]
+	
+	def format_time(self, input_string, split_symbol):
+		t = input_string[:-3]
+		if t[-2] == split_symbol:
+			t = t[:-1] + '0' + t[-1]
+		if t[-5] == split_symbol:
+			t = t[:-4] + '0' + t[-4:]
+		return t
+		
 if __name__ == '__main__':
-	obj=SCHOOL_SYSU(False)
+	obj=SCHOOL_SYSU(True)
 	obj.open_url_and_get_page()
+	obj.recursive_get_each_entry()
+
+
+
+'''
+中大的网站我花了很长时间调试
+
+使用chrome的F12，Network标签下勾选"Preserve Log"以保存redirect前的结果，还有禁用cache。
+
+发觉中大的先是在点击条目后进行POST，此时post的地址是新的URL，注意及时更换
+
+self.url = conn.url
+
+与post有关的payload为
+payload = {
+	'__VIEWSTATEGENERATOR':'',
+	'__VIEWSTATE': '',
+	'__EVENTVALIDATION': '',
+	'__ASYNCPOST': 'true',
+	'__EVENTTARGET': '', #这个是a标签的href第一个参数
+	'__EVENTARGUMENT': '',
+}
+
+服务器使用ASP.Net，收到来自客户的post后，返回一个redirect的结果重定向为正确的页面
+
+print res.content
+结果
+69|dataItem||<script type="text/javascript">window.location="about:blank"</script>|79|pageRedirect||/(S(z2rutgrcb4piw335ifieiwzd))/Management_Field/Public/ViewLecture.aspx?id=5734
+
+提取最后的地址，去掉Sxxxxx的会话id，就是正确的地址
+'''
