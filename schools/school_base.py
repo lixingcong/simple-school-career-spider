@@ -51,5 +51,7 @@ class SCHOOL_BASE(object):
 		self.convert_to_table()
 		return self.content
 	
+	def get_tilte(self):
+		return self.title
 	
 		

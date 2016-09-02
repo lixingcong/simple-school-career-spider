@@ -14,7 +14,10 @@ def add_serval_school_to_HTML_body(input_school_list):
 		import time
 		content += u'<p>更新时间：' + time.strftime("%Y-%m-%d %H:%M") + u'</p>'
 		for i in input_school_list:
-			content += i.get_HTML()
+			try:
+				content += i.get_HTML()
+			except:
+				content += u'<p>' + i.get_title() + u': error occurs</p>'
 		content += u'<p>由<a href="http://lixingcong.github.io">Lixingcong</a>使用python强力驱动。Github仓库：<a href="https://github.com/lixingcong/simple-school-career-spider">simple-school-career-spider</a></p></body></html>' 
 		return content
 	return None
