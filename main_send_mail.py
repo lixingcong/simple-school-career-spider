@@ -5,7 +5,7 @@
 Created on 2016年9月2日
 @author: li
 '''
-from my_mail.mail_account_example import MAIL_ACCOUNT_EXAMPLE
+from mail_accounts.mail_account_example import MAIL_ACCOUNT_EXAMPLE
 
 
 if __name__ == '__main__':

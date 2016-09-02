@@ -5,7 +5,7 @@ Created on 2016年8月29日
 
 @author: li
 '''
-from my_mail.mail_account_base import MAIL_ACCOUNT_BASE
+from mail_accounts.mail_account_base import MAIL_ACCOUNT_BASE
 
 class MAIL_ACCOUNT_EXAMPLE(MAIL_ACCOUNT_BASE):
 	def __init__(self):

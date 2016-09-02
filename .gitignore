@@ -5,6 +5,6 @@
 .pydevproject
 .settings/
 cookiejar
-my_mail/mail_account_private*.py
+mail_accounts/mail_account_private*.py
 main_private*.py
 

@@ -43,7 +43,7 @@
 
 编写合适的```main.py```和```mail_account_private.py```，可以实现抓取多个学校并发送到指定邮箱
 
-	cd my_mail
+	cd mail_accounts
 	# 创建一个mail_account类（继承mail_account_base）
 	# 可以参考mail_account_example.py，比如添加一个新浪邮箱
 	cp mail_account_example.py mail_account_private_sina.py
