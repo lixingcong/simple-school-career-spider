@@ -4,5 +4,5 @@
 .project
 .pydevproject
 .settings/
-my_mail_accounts.py
 cookiejar
+my_mail/mail_account_private*.py
