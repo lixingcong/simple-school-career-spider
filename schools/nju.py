@@ -4,6 +4,7 @@
 '''
 Created on 2016年9月1日
 @author: li
+注意：南京大学的端口是9081，自己服务器防火墙需要打开这个入站请求才能完成
 '''
 from bs4 import BeautifulSoup
 import requests
@@ -20,7 +21,7 @@ class SCHOOL_NJU(SCHOOL_BASE):
 		if self.isFromLocal is False:
 			self.calc_delta_date()
 			url = u'/login/nju/home.jsp?type=zph&pageNow=1&sfss=sfss&zphzt=&jbksrq=' + self.begin_date + u'&jbjsrq=' + self.end_date + u'&sfgq=&pageSearch=1'
-			conn = requests.get(self.host + url, headers=self.header)
+			conn = requests.get(self.host + url, headers=self.header, timeout=60)
 			self.content_original = conn.content
 		else:
 			with open('/tmp/req.html', 'rb') as f:

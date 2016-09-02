@@ -26,7 +26,7 @@ class SCHOOL_SHU(SCHOOL_BASE):
 		
 	def open_url_and_get_page(self):
 		if self.isFromLocal is False:
-			conn = requests.get(self.url, headers=self.header)
+			conn = requests.get(self.url, headers=self.header, timeout=60)
 			res = BeautifulSoup(conn.content, "html.parser")
 			ev = res.select("#__EVENTVALIDATION")[0]["value"]
 			vs = res.select("#__VIEWSTATE")[0]["value"]
