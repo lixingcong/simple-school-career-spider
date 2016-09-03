@@ -9,7 +9,7 @@ from mail_accounts.mail_account_base import MAIL_ACCOUNT_BASE
 
 class MAIL_ACCOUNT_EXAMPLE(MAIL_ACCOUNT_BASE):
 	def __init__(self):
-		MAIL_ACCOUNT_BASE.__init__(self, 'sender@qq.com', 'password', 'smtp.qq.com', ['tom@qq.com','Jane@qq.com'], '近期宣讲会', '/tmp/GuangZhou_spider.html', True)
+		MAIL_ACCOUNT_BASE.__init__(self, 'sender@qq.com', 'password', 'smtp.qq.com', ['tom@qq.com','Jane@qq.com'], u'近期宣讲会', '/tmp/GuangZhou_spider.html', True)
 
 if __name__ == '__main__':
 	my_mail_account=MAIL_ACCOUNT_EXAMPLE()
