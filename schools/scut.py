@@ -7,10 +7,32 @@ Created on 2016年9月2日
 '''
 from schools.school_base import SCHOOL_BASE
 from bs4 import BeautifulSoup
+import requests
 
 class SCHOOL_SCUT(SCHOOL_BASE):
 	def __init__(self, isFromLocal=False):
 		SCHOOL_BASE.__init__(self, u'华南理工大学', u'http://202.38.194.183', u'/jyzx/xs/zpxx/xyxj/', isFromLocal=isFromLocal)
+		self.payload = {
+			'pageNo':'1',
+			'daoxv1':'-1',
+			'time':'-14',  # 近两周
+			'imageField':u'搜索',
+			'pageNO':''  # 当前页码
+		}
+		
+	def open_url_and_get_page(self, page=None):
+		if self.isFromLocal is False:
+			url = self.host + self.url
+			if page is None:
+				conn = requests.get(url, headers=self.header, timeout=60)
+			else:
+				self.payload['pageNO'] = page
+				conn = requests.post(url, headers=self.header, timeout=60, data=self.payload)
+			
+			self.content_original = conn.content
+		else:
+			with open('/tmp/req.html', 'rb') as f:
+				self.content_original = f.read().decode('utf-8')
 		
 	def recursive_get_each_entry(self):
 		if self.content_original:
@@ -36,6 +58,15 @@ class SCHOOL_SCUT(SCHOOL_BASE):
 					list_to_insert = []
 					list_to_insert.append(list_one)
 					self.dict_all[list_one[0]] = list_to_insert
+					
+			self.recursive_get_next_page_content(res)
+					
+	def recursive_get_next_page_content(self, BeautifulSoup_obj):
+		next_page = BeautifulSoup_obj.find('a', {'class':'page-next'})
+		if next_page is not None:
+			page_number = next_page['href'].split('(')[1][:-2]
+			self.open_url_and_get_page(page=page_number)
+			self.recursive_get_each_entry()
 
 	def convert_to_table(self):
 		self.content += (u'<h3>' + self.title + u'</h3>')
