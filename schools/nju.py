@@ -56,14 +56,16 @@ class SCHOOL_NJU(SCHOOL_BASE):
 					self.dict_all[list_one[3]] = list_to_insert
 				
 				index += 1
+				
+			# 递归抓取
+			self.recursive_get_next_page_content(res)
 			
-			# 递归抓取下一页
-			nav_links = res.find_all('a', {'style':'width:50px;color:#0082e7;'})
-			for link in nav_links:
-				if link.string == u'下一页':
-					self.open_url_and_get_page(link['href'])
-					self.recursive_get_each_entry()
-			
+	def recursive_get_next_page_content(self, BeautifulSoup_obj):
+		nav_links = BeautifulSoup_obj.find_all('a', {'style':'width:50px;color:#0082e7;'})
+		for link in nav_links:
+			if link.string == u'下一页':
+				self.open_url_and_get_page(link['href'])
+				self.recursive_get_each_entry()
 					
 	def convert_to_table(self):
 		self.content += (u'<h3>' + self.title + u'</h3>')
