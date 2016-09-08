@@ -8,9 +8,9 @@ Created on 2016年8月30日
 from schools.sysu import SCHOOL_SYSU
 from schools.scut import SCHOOL_SCUT
 
-def add_serval_school_to_HTML_body(input_school_list):
+def add_serval_school_to_HTML_body(input_school_list, HTML_title):
 	if input_school_list is not None:
-		content = u'<html><head><meta charset="utf-8"><style>table, th, td { border: 1px solid #99cccc; text-align: left;}</style></head><body><h2>未来七日宣讲会</h2>'
+		content = u'<html><head><meta charset="utf-8"><style>table, th, td { border: 1px solid #99cccc; text-align: left;}</style></head><body><h2>' + HTML_title + u'</h2>'
 		import time
 		content += u'<p>更新时间：' + time.strftime("%Y-%m-%d %H:%M") + u'</p>'
 		for i in input_school_list:
@@ -30,5 +30,5 @@ if __name__ == '__main__':
 	school_list.append(SCHOOL_SCUT())
 	
 	# Save content to local disk
-	with open('/tmp/GuangZhou_spider.html','wb') as f:
-		f.write(add_serval_school_to_HTML_body(school_list).encode('utf-8'))
+	with open('/tmp/Guangzhou_spider.html', 'wb') as f:
+		f.write(add_serval_school_to_HTML_body(school_list, u'未来两周宣讲会').encode('utf-8'))
