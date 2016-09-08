@@ -16,11 +16,15 @@ class SCHOOL_NJU(SCHOOL_BASE):
 		self.begin_date = ''
 		self.end_date = ''
 		
-	def open_url_and_get_page(self):
+	def open_url_and_get_page(self, link=None):
 		# open page and it should be decoded here
 		if self.isFromLocal is False:
-			self.calc_delta_date()
-			url = u'/login/nju/home.jsp?type=zph&pageNow=1&sfss=sfss&zphzt=&jbksrq=' + self.begin_date + u'&jbjsrq=' + self.end_date + u'&sfgq=&pageSearch=1'
+			if link is None:
+				self.calc_delta_date()
+				url = u'/login/nju/home.jsp?type=zph&pageNow=1&sfss=sfss&zphzt=&jbksrq=' + self.begin_date + u'&jbjsrq=' + self.end_date + u'&sfgq=&pageSearch=1'
+			else:
+				url = u'/login/nju/' + link
+			
 			conn = requests.get(self.host + url, headers=self.header, timeout=60)
 			self.content_original = conn.content
 		else:
@@ -52,6 +56,14 @@ class SCHOOL_NJU(SCHOOL_BASE):
 					self.dict_all[list_one[3]] = list_to_insert
 				
 				index += 1
+			
+			# 递归抓取下一页
+			nav_links = res.find_all('a', {'style':'width:50px;color:#0082e7;'})
+			for link in nav_links:
+				if link.string == u'下一页':
+					self.open_url_and_get_page(link['href'])
+					self.recursive_get_each_entry()
+			
 					
 	def convert_to_table(self):
 		self.content += (u'<h3>' + self.title + u'</h3>')
