@@ -9,8 +9,23 @@ Created on 2016年8月30日
 '''
 from bs4 import BeautifulSoup
 from schools.school_base import SCHOOL_BASE
+import requests
 
 class SCHOOL_91JOB_GOV_CN(SCHOOL_BASE):
+	
+	def open_url_and_get_page(self, link=None):
+		# open page and it should be decoded here
+		if self.isFromLocal is False:
+			if link is None:
+				url = self.host + self.url
+			else:
+				url = self.host + link
+			
+			conn = requests.get(url, headers=self.header, timeout=60)
+			self.content_original = conn.content
+		else:
+			with open('/tmp/req.html', 'rb') as f:
+				self.content_original = f.read().decode('utf-8')
 			
 	def format_date(self, input_string, split_symbol):
 		t = input_string
@@ -42,6 +57,18 @@ class SCHOOL_91JOB_GOV_CN(SCHOOL_BASE):
 					list_to_insert = []
 					list_to_insert.append(list_one)
 					self.dict_all[list_one[3]] = list_to_insert
+					
+			self.recursive_get_next_page_content(res)
+			
+	def recursive_get_next_page_content(self, BeautifulSoup_obj):
+		next_page = BeautifulSoup_obj.find('li', {'class':'next'})
+		if next_page is not None:
+			# 尾递归条件, class='next hidden'
+			if len(list(next_page['class'])) == 2:
+				return
+			
+			self.open_url_and_get_page(next_page.a['href'])
+			self.recursive_get_each_entry()
 					
 	def convert_to_table(self):
 		self.content += (u'<h3>' + self.title + u'</h3>')

@@ -30,7 +30,6 @@ class SCHOOL_NJU(SCHOOL_BASE):
 		else:
 			with open('/tmp/req.html', 'rb') as f:
 				self.content_original = f.read().decode('utf-8')
-		pass
 	
 	def recursive_get_each_entry(self):
 		if self.content_original:

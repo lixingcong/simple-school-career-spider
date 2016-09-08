@@ -18,7 +18,7 @@ class SCHOOL_BASE(object):
 		self.isFromLocal = isFromLocal
 		self.dict_all = {}
 		
-	def open_url_and_get_page(self):
+	def open_url_and_get_page(self, link=None):
 		# open page and it should be decoded here
 		if self.isFromLocal is False:
 			conn = requests.get(self.host + self.url, headers=self.header, timeout=60)
@@ -26,10 +26,13 @@ class SCHOOL_BASE(object):
 		else:
 			with open('/tmp/req.html', 'rb') as f:
 				self.content_original = f.read().decode('utf-8')
-		pass
 	
 	def recursive_get_each_entry(self):
 		# get each page and add to self.content
+		pass
+	
+	def recursive_get_next_page_content(self, BeautifulSoup_obj):
+		# get next page from a bs4 object
 		pass
 	
 	def format_time(self, input_string, split_symbol):
