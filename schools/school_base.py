@@ -21,7 +21,12 @@ class SCHOOL_BASE(object):
 	def open_url_and_get_page(self, link=None):
 		# open page and it should be decoded here
 		if self.isFromLocal is False:
-			conn = requests.get(self.host + self.url, headers=self.header, timeout=60)
+			if link is None:
+				url = self.host + self.url
+			else:
+				url = self.host + link
+			
+			conn = requests.get(url, headers=self.header, timeout=60)
 			self.content_original = conn.content
 		else:
 			with open('/tmp/req.html', 'rb') as f:

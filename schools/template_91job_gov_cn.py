@@ -11,22 +11,7 @@ from bs4 import BeautifulSoup
 from schools.school_base import SCHOOL_BASE
 import requests
 
-class SCHOOL_91JOB_GOV_CN(SCHOOL_BASE):
-	
-	def open_url_and_get_page(self, link=None):
-		# open page and it should be decoded here
-		if self.isFromLocal is False:
-			if link is None:
-				url = self.host + self.url
-			else:
-				url = self.host + link
-			
-			conn = requests.get(url, headers=self.header, timeout=60)
-			self.content_original = conn.content
-		else:
-			with open('/tmp/req.html', 'rb') as f:
-				self.content_original = f.read().decode('utf-8')
-			
+class SCHOOL_91JOB_GOV_CN(SCHOOL_BASE):	
 	def format_date(self, input_string, split_symbol):
 		t = input_string
 		if t[-2] == split_symbol:
