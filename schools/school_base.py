@@ -4,8 +4,9 @@
 import requests
 
 class SCHOOL_BASE(object):
-	def __init__(self, title, host, url, isFromLocal=False):
+	def __init__(self, title, abbr, host, url, isFromLocal=False):
 		self.title = title
+		self.abbr = abbr
 		self.host = host
 		self.url = url
 		self.content_original = ''
@@ -17,6 +18,7 @@ class SCHOOL_BASE(object):
 		}
 		self.isFromLocal = isFromLocal
 		self.dict_all = {}
+		self.item_counter = 0
 		
 	def open_url_and_get_page(self, link=None):
 		# open page and it should be decoded here
@@ -62,4 +64,8 @@ class SCHOOL_BASE(object):
 	def get_title(self):
 		return self.title
 	
-		
+	def get_school_abbreviation(self):
+		return self.abbr
+	
+	def add_title_to_content(self):
+		self.content += (u'<a name="' + self.abbr + u'"></a><h3>' + self.title + u'</h3>')

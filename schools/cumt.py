@@ -9,7 +9,7 @@ from schools.template_91job_gov_cn import SCHOOL_91JOB_GOV_CN
 
 class SCHOOL_CUMT(SCHOOL_91JOB_GOV_CN):
 	def __init__(self, isFromLocal=False):
-		SCHOOL_91JOB_GOV_CN.__init__(self,u"中国矿业大学", u'http://jyzd.cumt.edu.cn', u'/teachin?time=14', isFromLocal=isFromLocal)
+		SCHOOL_91JOB_GOV_CN.__init__(self, u"中国矿业大学", u'cumt', u'http://jyzd.cumt.edu.cn', u'/teachin?time=14', isFromLocal=isFromLocal)
 
 if __name__ == '__main__':
 	c = SCHOOL_CUMT(isFromLocal=False)		

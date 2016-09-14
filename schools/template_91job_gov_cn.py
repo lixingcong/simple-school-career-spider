@@ -42,6 +42,7 @@ class SCHOOL_91JOB_GOV_CN(SCHOOL_BASE):
 					list_to_insert = []
 					list_to_insert.append(list_one)
 					self.dict_all[list_one[3]] = list_to_insert
+				self.item_counter+=1
 					
 			self.recursive_get_next_page_content(res)
 			
@@ -56,7 +57,7 @@ class SCHOOL_91JOB_GOV_CN(SCHOOL_BASE):
 			self.recursive_get_each_entry()
 					
 	def convert_to_table(self):
-		self.content += (u'<h3>' + self.title + u'</h3>')
+		self.add_title_to_content()
 		if self.dict_all == {}:
 			self.content += u'<p>抓取内容为空</p>'
 		else:
