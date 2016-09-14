@@ -8,6 +8,7 @@ Created on 2016年9月1日
 from schools.school_base import SCHOOL_BASE
 import requests
 from bs4 import BeautifulSoup
+import re
 
 class SCHOOL_SHU(SCHOOL_BASE):
 	def __init__(self, isFromLocal=False):
@@ -21,20 +22,42 @@ class SCHOOL_SHU(SCHOOL_BASE):
 			'ctl00$content$ddlXL':u'本科',
 			'ctl00$content$ddlJobNature':u'全职',
 			'ctl00$content$ddlReleaseDate':'7',
-			'ctl00$content$btnSearch':u'职位搜索'
+			'ctl00$content$btnSearch':u'职位搜索',
+			'ctl00$content$ddlReleaseDate':'1',  # 一天内
+			'__EVENTTARGET':'',
+			'ctl00$content$gvPosiList$ctl01$txtNewPageIndex':'',
 		}
+		self.isPopped = False
+		self.viewstate = ''
+		self.eventvalidation = ''
+		self.re_program_viewstate = re.compile("__VIEWSTATE\|.*?\|")
+		self.re_program_eventvalidation = re.compile("__EVENTVALIDATION\|.*?\|")
 		
-	def open_url_and_get_page(self):
-		if self.isFromLocal is False:
-			conn = requests.get(self.url, headers=self.header, timeout=60)
-			res = BeautifulSoup(conn.content, "html.parser")
-			ev = res.select("#__EVENTVALIDATION")[0]["value"]
-			vs = res.select("#__VIEWSTATE")[0]["value"]
-			vsg = res.select("#__VIEWSTATEGENERATOR")[0]["value"]
-			self.payload["__EVENTVALIDATION"] = ev
-			self.payload["__VIEWSTATEGENERATOR"] = vsg
-			self.payload["__VIEWSTATE"] = vs
+		
+	def open_url_and_get_page(self, thispage=None):
+		if self.isFromLocal is False:			
+			if thispage is None:
+				conn = requests.get(self.url, headers=self.header, timeout=60)
+				res = BeautifulSoup(conn.content, "html.parser")
+				ev = res.select("#__EVENTVALIDATION")[0]["value"]
+				vs = res.select("#__VIEWSTATE")[0]["value"]
+				vsg = res.select("#__VIEWSTATEGENERATOR")[0]["value"]				
+				self.payload["__VIEWSTATEGENERATOR"] = vsg
+				self.payload["__EVENTVALIDATION"] = ev
+				self.payload["__VIEWSTATE"] = vs
+			else:
+				self.find_real_VIEWSTATE_and_EVENTVALIDATION()
+				self.payload["__EVENTVALIDATION"] = self.eventvalidation
+				self.payload["__VIEWSTATE"] = self.viewstate
+				self.payload['ctl00$content$gvPosiList$ctl01$txtNewPageIndex'] = thispage
+				
 			conn = requests.post(self.url, headers=self.header, timeout=60, data=self.payload)
+			
+			if self.isPopped is False:
+				self.payload.pop('ctl00$content$btnSearch')
+				self.payload['__EVENTTARGET'] = 'ctl00$content$gvPosiList$ctl01$btnNext'
+				self.isPopped = True
+				
 			self.content_original = conn.content
 			
 		else:
@@ -69,6 +92,16 @@ class SCHOOL_SHU(SCHOOL_BASE):
 					self.dict_all[list_one[0]] = list_to_insert
 					
 				self.item_counter += 1
+				
+			self.recursive_get_next_page_content(res)
+	
+	def recursive_get_next_page_content(self, BeautifulSoup_obj):
+		this_page = BeautifulSoup_obj.select("#content_gvPosiList_lblPageIndex")[0].string
+		max_page = BeautifulSoup_obj.select("#content_gvPosiList_lblPageCount")[0].string
+		if int(this_page) < int(max_page):
+			self.open_url_and_get_page(this_page)
+			self.recursive_get_each_entry()
+			
 	
 	def convert_to_table(self):
 		self.add_title_to_content()
@@ -89,6 +122,10 @@ class SCHOOL_SHU(SCHOOL_BASE):
 					is_firstline = False
 			self.content += u'</table>'
 			self.add_homepage_link_to_content()
+			
+	def find_real_VIEWSTATE_and_EVENTVALIDATION(self):
+		self.viewstate = self.re_program_viewstate.findall(self.content_original)[0][12:-1]
+		self.eventvalidation = self.re_program_eventvalidation.findall(self.content_original)[0][18:-1]
 		
 	
 if __name__ == '__main__':
@@ -97,3 +134,9 @@ if __name__ == '__main__':
 	content += obj.get_HTML()
 	content += u'<p>由<a href="http://lixingcong.github.io">Lixingcong</a>使用python强力驱动</p></body></html>'
 	print content
+
+'''
+上海大学的ASP.net提交post非常蛋疼，那个VIEWSTATE和EVENTVALIDATION是动态更新的，需要写一个正则匹配找出每页的正确值
+作为data-payload进行提交表单POST才能有结果
+'''
+	
