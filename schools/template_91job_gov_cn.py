@@ -42,7 +42,7 @@ class SCHOOL_91JOB_GOV_CN(SCHOOL_BASE):
 					list_to_insert = []
 					list_to_insert.append(list_one)
 					self.dict_all[list_one[3]] = list_to_insert
-				self.item_counter+=1
+				self.item_counter += 1
 					
 			self.recursive_get_next_page_content(res)
 			
@@ -74,4 +74,5 @@ class SCHOOL_91JOB_GOV_CN(SCHOOL_BASE):
 					self.content += u'<th>' + i[4] + u'</th></tr>'
 					is_firstline = False
 			self.content += u'</table>'
+			self.add_homepage_link_to_content()
 		

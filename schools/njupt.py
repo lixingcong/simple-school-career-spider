@@ -9,7 +9,7 @@ from schools.template_91job_gov_cn import SCHOOL_91JOB_GOV_CN
 
 class SCHOOL_NJUPT(SCHOOL_91JOB_GOV_CN):
 	def __init__(self, isFromLocal=False):
-		SCHOOL_91JOB_GOV_CN.__init__(self, u'南京邮电大学',u'http://njupt.91job.gov.cn', u'/teachin?time=14', isFromLocal=isFromLocal)
+		SCHOOL_91JOB_GOV_CN.__init__(self, u'南京邮电大学', u'njupt', u'http://njupt.91job.gov.cn', u'/teachin?time=14', isFromLocal=isFromLocal)
 
 if __name__ == '__main__':
 	obj=SCHOOL_NJUPT()

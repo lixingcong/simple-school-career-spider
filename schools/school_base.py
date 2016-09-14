@@ -64,8 +64,14 @@ class SCHOOL_BASE(object):
 	def get_title(self):
 		return self.title
 	
+	def get_item_counter(self):
+		return str(self.item_counter)
+	
 	def get_school_abbreviation(self):
 		return self.abbr
 	
 	def add_title_to_content(self):
 		self.content += (u'<a name="' + self.abbr + u'"></a><h3>' + self.title + u'</h3>')
+		
+	def add_homepage_link_to_content(self):
+		self.content += u'<p><a href="#">回到首页</a></p>'

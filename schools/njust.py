@@ -9,7 +9,7 @@ from schools.template_91job_gov_cn import SCHOOL_91JOB_GOV_CN
 
 class SCHOOL_NJUST(SCHOOL_91JOB_GOV_CN):
 	def __init__(self, isFromLocal=False):
-		SCHOOL_91JOB_GOV_CN.__init__(self, u'南京理工大学',u'http://njust.91job.gov.cn', u'/teachin?time=14', isFromLocal=isFromLocal)
+		SCHOOL_91JOB_GOV_CN.__init__(self, u'南京理工大学', u'njust', u'http://njust.91job.gov.cn', u'/teachin?time=14', isFromLocal=isFromLocal)
 
 if __name__ == '__main__':
 	obj=SCHOOL_NJUST()
