@@ -26,14 +26,17 @@ def add_serval_school_to_HTML_body(input_school_list, HTML_title):
 		for i in input_school_list:
 			try:
 				school_content += i.get_HTML()
+				# Homepage Navigator
 				content += u'<tr><th><a href="#' + i.get_school_abbreviation() + u'">' + i.get_title() + u'</a></th><th>' + i.get_item_counter() + u'</th></tr>'
 			except:
-				school_content += u'<p>' + i.get_title() + u': error occurs</p>'
+				school_content += u'<p style="background: #ff6666">' + i.get_title() + u': error occurs</p>'
 		content += u'</table>'
 		content += school_content
+		
+		# footer
 		content += u'<p>由<a href="http://lixingcong.github.io">Lixingcong</a>使用python强力驱动。Github仓库：<a href="https://github.com/lixingcong/simple-school-career-spider">simple-school-career-spider</a></p></body></html>' 
 		return content
-	return None
+	return u'None'
 	
 if __name__ == '__main__':
 	school_list = []

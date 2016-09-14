@@ -13,7 +13,7 @@ import re
 
 class SCHOOL_SYSU(SCHOOL_BASE):
 	def __init__(self, isFromLocal=False):
-		SCHOOL_BASE.__init__(self, u'中山大学', u'http://career.sysu.edu.cn', u'/Management_Field/Public/LectureManage.aspx', isFromLocal=isFromLocal)
+		SCHOOL_BASE.__init__(self, u'中山大学', u'sysu', u'http://career.sysu.edu.cn', u'/Management_Field/Public/LectureManage.aspx', isFromLocal=isFromLocal)
 		self.payload = {
 			'__VIEWSTATEGENERATOR':'',
 			'__VIEWSTATE': '',
@@ -86,7 +86,7 @@ class SCHOOL_SYSU(SCHOOL_BASE):
 					list_to_insert.append(list_one)
 					self.dict_all[list_one[0]] = list_to_insert
 				
-				self.item_counter+=1
+				self.item_counter += 1
 				
 	def convert_to_table(self):
 		self.add_title_to_content()

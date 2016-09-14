@@ -11,7 +11,7 @@ import requests
 
 class SCHOOL_SCUT(SCHOOL_BASE):
 	def __init__(self, isFromLocal=False):
-		SCHOOL_BASE.__init__(self, u'华南理工大学', u'http://202.38.194.183', u'/jyzx/xs/zpxx/xyxj/', isFromLocal=isFromLocal)
+		SCHOOL_BASE.__init__(self, u'华南理工大学', u'scut', u'http://202.38.194.183', u'/jyzx/xs/zpxx/xyxj/', isFromLocal=isFromLocal)
 		self.payload = {
 			'pageNo':'1',
 			'daoxv1':'-1',
@@ -58,7 +58,9 @@ class SCHOOL_SCUT(SCHOOL_BASE):
 					list_to_insert = []
 					list_to_insert.append(list_one)
 					self.dict_all[list_one[0]] = list_to_insert
-					
+				
+				self.item_counter += 1
+				
 			self.recursive_get_next_page_content(res)
 					
 	def recursive_get_next_page_content(self, BeautifulSoup_obj):
@@ -69,7 +71,7 @@ class SCHOOL_SCUT(SCHOOL_BASE):
 			self.recursive_get_each_entry()
 
 	def convert_to_table(self):
-		self.content += (u'<h3>' + self.title + u'</h3>')
+		self.add_title_to_content()
 		if self.dict_all == {}:
 			self.content += u'<p>抓取内容为空</p>'
 		else:
@@ -85,7 +87,8 @@ class SCHOOL_SCUT(SCHOOL_BASE):
 					self.content += u'<th>' + i[1] + u'</th></tr>'
 					is_firstline = False
 			self.content += u'</table>'
-			
+		self.add_homepage_link_to_content()
+		
 	def format_date(self, input_string, split_symbol):
 		t = input_string
 		if t[-2] == split_symbol:
