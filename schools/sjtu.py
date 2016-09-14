@@ -57,7 +57,7 @@ class SCHOOL_SJTU(SCHOOL_BASE):
 					self.content += u'<th><a href="' + self.host + i[1] + u'">' + i[2] + u'</a></tr>'
 					is_firstline = False
 			self.content += u'</table>'
-			self.add_homepage_link_to_content()
+		self.add_homepage_link_to_content()
 	
 	def get_real_link(self, input_string):
 		# input string should be like this:

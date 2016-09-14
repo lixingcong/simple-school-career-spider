@@ -86,8 +86,10 @@ class SCHOOL_SYSU(SCHOOL_BASE):
 					list_to_insert.append(list_one)
 					self.dict_all[list_one[0]] = list_to_insert
 				
+				self.item_counter+=1
+				
 	def convert_to_table(self):
-		self.content += (u'<h3>' + self.title + u'</h3>')
+		self.add_title_to_content()
 		if self.dict_all == {}:
 			self.content += u'<p>抓取内容为空</p>'
 		else:
@@ -104,6 +106,7 @@ class SCHOOL_SYSU(SCHOOL_BASE):
 					self.content += u'<th>' + i[3] + u'</th></tr>'
 					is_firstline = False
 			self.content += u'</table>'
+		self.add_homepage_link_to_content()
 
 	def get_real_link(self, input_string):
 		# input string should be like this:
