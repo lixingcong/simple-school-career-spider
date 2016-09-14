@@ -12,7 +12,7 @@ from schools.school_base import SCHOOL_BASE
 
 class SCHOOL_NJU(SCHOOL_BASE):
 	def __init__(self, isFromLocal=False):
-		SCHOOL_BASE.__init__(self, u'南京大学', u'http://job.nju.edu.cn:9081', u'', isFromLocal=isFromLocal)
+		SCHOOL_BASE.__init__(self, u'南京大学', u'nju', u'http://job.nju.edu.cn:9081', u'', isFromLocal=isFromLocal)
 		self.begin_date = ''
 		self.end_date = ''
 		
@@ -55,7 +55,9 @@ class SCHOOL_NJU(SCHOOL_BASE):
 					self.dict_all[list_one[3]] = list_to_insert
 				
 				index += 1
-				
+			
+			self.item_counter += index
+			
 			# 递归抓取
 			self.recursive_get_next_page_content(res)
 			
@@ -67,7 +69,7 @@ class SCHOOL_NJU(SCHOOL_BASE):
 				self.recursive_get_each_entry()
 					
 	def convert_to_table(self):
-		self.content += (u'<h3>' + self.title + u'</h3>')
+		self.add_title_to_content()
 		if self.dict_all == {}:
 			self.content += u'<p>抓取内容为空</p>'
 		else:
@@ -84,6 +86,7 @@ class SCHOOL_NJU(SCHOOL_BASE):
 					self.content += u'<th>' + i[4] + u'</th></tr>'
 					is_firstline = False
 			self.content += u'</table>'
+			self.add_homepage_link_to_content()
 			
 	
 	def calc_delta_date(self):

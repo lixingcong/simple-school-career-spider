@@ -11,7 +11,7 @@ from bs4 import BeautifulSoup
 
 class SCHOOL_SHU(SCHOOL_BASE):
 	def __init__(self, isFromLocal=False):
-		SCHOOL_BASE.__init__(self, u'上海大学', u'http://zbb.shu.edu.cn', u'http://zbb.shu.edu.cn/PositionList.aspx', isFromLocal=isFromLocal)
+		SCHOOL_BASE.__init__(self, u'上海大学', u'shu', u'http://zbb.shu.edu.cn', u'http://zbb.shu.edu.cn/PositionList.aspx', isFromLocal=isFromLocal)
 		self.header['X-MicrosoftAjax'] = 'Delta=true'
 		self.header['X-Requested-With'] = 'XMLHttpRequest'
 		self.payload = {
@@ -67,9 +67,11 @@ class SCHOOL_SHU(SCHOOL_BASE):
 					list_to_insert = []
 					list_to_insert.append(list_one)
 					self.dict_all[list_one[0]] = list_to_insert
+					
+				self.item_counter += 1
 	
 	def convert_to_table(self):
-		self.content += (u'<h3>' + self.title + u'</h3>')
+		self.add_title_to_content()
 		if self.dict_all == {}:
 			self.content += u'<p>抓取内容为空</p>'
 		else:
@@ -86,6 +88,7 @@ class SCHOOL_SHU(SCHOOL_BASE):
 					self.content += u'<th>' + i[3] + u'</th></tr>'
 					is_firstline = False
 			self.content += u'</table>'
+			self.add_homepage_link_to_content()
 		
 	
 if __name__ == '__main__':
