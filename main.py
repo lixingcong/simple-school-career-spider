@@ -12,7 +12,12 @@ import time
 def add_serval_school_to_HTML_body(input_school_list, HTML_title):
 	if input_school_list is not None:
 		school_content = u''
-		content = u'<html><head><meta charset="utf-8"><style>table, th, td { border: 1px solid #99cccc; text-align: left;}</style></head><body><h2>' + HTML_title + u'</h2>'
+		content = u'<html><head><meta charset="utf-8">'
+		# CSS style
+		content += u'<style>table, th, td { border: 1px solid #99cccc; text-align: left;}h3 { background: #99ccff}</style>'
+		# title
+		content += u'</head><body><h2>' + HTML_title + u'</h2>'
+		# update time
 		content += u'<p>更新时间：' + time.strftime("%Y-%m-%d %H:%M") + u'</p>'
 		
 		# build a table link

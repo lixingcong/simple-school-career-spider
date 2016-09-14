@@ -5,15 +5,14 @@
 Created on 2016年9月1日
 @author: li
 '''
-import re
-import requests
+
 from schools.school_base import SCHOOL_BASE
 from bs4 import BeautifulSoup
 
 
 class SCHOOL_SJTU(SCHOOL_BASE): 
 	def __init__(self, isFromLocal=False):
-		SCHOOL_BASE.__init__(self, u'上海交通大学', u'http://www.job.sjtu.edu.cn', u'/eweb/jygl/zpfw.so?modcode=jygl_zpxxck&subsyscode=zpfw&type=searchZpxx&zpxxType=new', isFromLocal=isFromLocal)
+		SCHOOL_BASE.__init__(self, u'上海交通大学', u'sjtu', u'http://www.job.sjtu.edu.cn', u'/eweb/jygl/zpfw.so?modcode=jygl_zpxxck&subsyscode=zpfw&type=searchZpxx&zpxxType=new', isFromLocal=isFromLocal)
 	
 	def recursive_get_each_entry(self):
 		if self.content_original:
@@ -38,9 +37,11 @@ class SCHOOL_SJTU(SCHOOL_BASE):
 					list_to_insert = []
 					list_to_insert.append(list_one)
 					self.dict_all[list_one[0]] = list_to_insert
+				
+				self.item_counter+=1
 	
 	def convert_to_table(self):
-		self.content += (u'<h3>' + self.title + u'</h3>')
+		self.add_title_to_content()
 		if self.dict_all == {}:
 			self.content += u'<p>抓取内容为空</p>'
 		else:
@@ -56,6 +57,7 @@ class SCHOOL_SJTU(SCHOOL_BASE):
 					self.content += u'<th><a href="' + self.host + i[1] + u'">' + i[2] + u'</a></tr>'
 					is_firstline = False
 			self.content += u'</table>'
+			self.add_homepage_link_to_content()
 	
 	def get_real_link(self, input_string):
 		# input string should be like this:
