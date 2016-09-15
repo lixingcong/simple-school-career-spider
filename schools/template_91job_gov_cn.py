@@ -18,7 +18,7 @@ class SCHOOL_91JOB_GOV_CN(SCHOOL_BASE):
 			t = t[:-1] + '0' + t[-1]
 		if t[-5] == split_symbol:
 			t = t[:-4] + '0' + t[-4:]
-		return t
+		return t[5:]
 		
 				
 	def recursive_get_each_entry(self):
@@ -32,8 +32,13 @@ class SCHOOL_91JOB_GOV_CN(SCHOOL_BASE):
 				list_one.append(list_each_course[0].a['href'].strip())  # 链接
 				list_one.append(list_each_course[0].a.string.strip())  # 企业名
 				list_one.append(list_each_course[3].string.strip())  # 公教地点
-				date_ = (list_each_course[4].string[:10].strip())  # 日期
-				list_one.append(self.format_date(date_, '-'))
+				
+				date_ = list_each_course[4].string[:10].strip()  # 日期
+				if date_.startswith(u'201'): # 2016, 2017....
+					list_one.append(self.format_date(date_, '-'))
+				else:
+					list_one.append(date_)
+					
 				list_one.append(list_each_course[4].string[10:].strip())  # 时间
 				# if exists then add to dict
 				if list_one[3] in self.dict_all.iterkeys():

@@ -31,9 +31,11 @@ def add_serval_school_to_HTML_body(input_school_list, HTML_title):
 				school_content += i.get_HTML()
 				# Homepage Navigator
 				content += u'<tr><th><a href="#' + i.get_school_abbreviation() + u'">' + i.get_title() + u'</a></th><th>' + i.get_item_counter() + u'</th></tr>'
-			except:
+			except Exception, exc:
 				school_content += u'<p style="background: #ff6666">' + i.get_title() + u': error occurs</p>'
 				content += u'<tr><th>' + i.get_title() + u'</th><th>出错</th></tr>'
+				print i.get_title(),exc
+				
 		# end of navigator table link		
 		content += u'</table>'
 		

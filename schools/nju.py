@@ -39,12 +39,18 @@ class SCHOOL_NJU(SCHOOL_BASE):
 			index = 0
 			for res_link in res_links:
 				list_one = []
-				list_one.append(res_link.a['href'].strip())
-				list_one.append(res_link.a.string.strip())
+				list_one.append(res_link.a['href'].strip())  # link
+				list_one.append(res_link.a.string.strip())  # name
 				tmp_strings = res_positions[index].string.split()
-				list_one.append(tmp_strings[0])
-				list_one.append(tmp_strings[1])
-				list_one.append(tmp_strings[2])				
+				list_one.append(tmp_strings[0])  # location
+				
+				date_ = (tmp_strings[1])  # date
+				if date_.startswith(u'201'):  # 2016  2017 ...
+					list_one.append(self.format_date(date_, '-'))
+				else:
+					list_one.append(date_)
+					
+				list_one.append(tmp_strings[2])  # time				
 				
 				# if exists then add to dict
 				if list_one[3] in self.dict_all.iterkeys():
@@ -87,6 +93,14 @@ class SCHOOL_NJU(SCHOOL_BASE):
 					is_firstline = False
 			self.content += u'</table>'
 		self.add_homepage_link_to_content()
+		
+	def format_date(self, input_string, split_symbol):
+		t = input_string
+		if t[-2] == split_symbol:
+			t = t[:-1] + '0' + t[-1]
+		if t[-5] == split_symbol:
+			t = t[:-4] + '0' + t[-4:]
+		return t[5:]
 			
 	
 	def calc_delta_date(self):
