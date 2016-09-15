@@ -12,17 +12,20 @@ import time
 def add_serval_school_to_HTML_body(input_school_list, HTML_title):
 	if input_school_list is not None:
 		school_content = u''
+		
+		# begin of HTML
 		content = u'<html><head><meta charset="utf-8">'
 		# CSS style
 		content += u'<style>table, th, td { border: 1px solid #99cccc; text-align: left;}h3 { background: #99ccff; text-indent:0.6em}</style>'
+		# begin of body
+		content += u'</head><body>'
 		# title
-		content += u'</head><body><h2>' + HTML_title + u'</h2>'
+		content += u'<h2>' + HTML_title + u'</h2>'
 		# update time
 		content += u'<p>更新时间：' + time.strftime("%Y-%m-%d %H:%M") + u'</p>'
 		
-		# build a table link
-		content += u'<h3>首页导航</h3><table><tr><th>学校:点击直达</th><th>招聘信息</th><tr>'
-		
+		# build a navigator table link
+		content += u'<h3>首页导航</h3><table><tr><th>学校:点击直达</th><th>招聘信息</th></tr>'
 		for i in input_school_list:
 			try:
 				school_content += i.get_HTML()
@@ -31,12 +34,19 @@ def add_serval_school_to_HTML_body(input_school_list, HTML_title):
 			except:
 				school_content += u'<p style="background: #ff6666">' + i.get_title() + u': error occurs</p>'
 				content += u'<tr><th>' + i.get_title() + u'</th><th>出错</th></tr>'
+		# end of navigator table link		
 		content += u'</table>'
-		content += school_content
 		
+		# school details
+		content += school_content
 		# footer
-		content += u'<p>由<a href="http://lixingcong.github.io">Lixingcong</a>使用python强力驱动。Github仓库：<a href="https://github.com/lixingcong/simple-school-career-spider">simple-school-career-spider</a></p></body></html>' 
+		content += u'<p>由<a href="http://lixingcong.github.io">Lixingcong</a>使用python强力驱动。Github仓库：<a href="https://github.com/lixingcong/simple-school-career-spider">simple-school-career-spider</a></p>'
+		# end of HTML
+		content += u'</body></html>' 
+		
 		return content
+	
+	# invalid school list
 	return u'None'
 	
 if __name__ == '__main__':
