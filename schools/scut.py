@@ -38,30 +38,32 @@ class SCHOOL_SCUT(SCHOOL_BASE):
 		if self.content_original:
 			res = BeautifulSoup(self.content_original, "html.parser")
 			ul_original = res.find('div', {'class':'list'}).ul
-			lis = ul_original.find_all('li')
-			for li in lis:
-				list_one = []
-				date_and_time = li.div.string.strip().split()
-				# date
-				list_one.append(self.format_date(date_and_time[0], '-'))
-				# time
-				list_one.append(date_and_time[1])
-				# link
-				list_one.append(li.a['href'])
-				# name
-				list_one.append(li.a.string.strip())
-				
-				# if exists then add to dict
-				if list_one[0] in self.dict_all.iterkeys():
-					self.dict_all[list_one[0]].append(list_one)
-				else:
-					list_to_insert = []
-					list_to_insert.append(list_one)
-					self.dict_all[list_one[0]] = list_to_insert
-				
-				self.item_counter += 1
-				
-			self.recursive_get_next_page_content(res)
+			
+			if ul_original:
+				lis = ul_original.find_all('li')
+				for li in lis:
+					list_one = []
+					date_and_time = li.div.string.strip().split()
+					# date
+					list_one.append(self.format_date(date_and_time[0], '-'))
+					# time
+					list_one.append(date_and_time[1])
+					# link
+					list_one.append(li.a['href'])
+					# name
+					list_one.append(li.a.string.strip())
+					
+					# if exists then add to dict
+					if list_one[0] in self.dict_all.iterkeys():
+						self.dict_all[list_one[0]].append(list_one)
+					else:
+						list_to_insert = []
+						list_to_insert.append(list_one)
+						self.dict_all[list_one[0]] = list_to_insert
+					
+					self.item_counter += 1
+					
+				self.recursive_get_next_page_content(res)
 					
 	def recursive_get_next_page_content(self, BeautifulSoup_obj):
 		next_page = BeautifulSoup_obj.find('a', {'class':'page-next'})

@@ -70,30 +70,31 @@ class SCHOOL_SHU(SCHOOL_BASE):
 			res = BeautifulSoup(self.content_original, "html.parser")
 			table_original = res.find('table', {'class':'table table-striped table-bordered'})
 
-			trs = table_original.find_all('tr')
-			for tr in trs[3:]:
-				list_one = []
-				tds = list(tr.find_all('td'))
-				# company name + publish date
-				list_one.append(tds[5].string.strip() + tds[2].string.strip())
-				# link
-				list_one.append(tds[0].a['href'].strip())
-				# link string
-				list_one.append(tds[0].a.string.strip())
-				# quantity
-				list_one.append(tds[4].string.strip())
-				
-				# if exists then add to dict
-				if list_one[0] in self.dict_all.iterkeys():  # if company exsit
-					self.dict_all[list_one[0]].append(list_one)
-				else:
-					list_to_insert = []
-					list_to_insert.append(list_one)
-					self.dict_all[list_one[0]] = list_to_insert
+			if table_original:
+				trs = table_original.find_all('tr')
+				for tr in trs[3:]:
+					list_one = []
+					tds = list(tr.find_all('td'))
+					# company name + publish date
+					list_one.append(tds[5].string.strip() + tds[2].string.strip())
+					# link
+					list_one.append(tds[0].a['href'].strip())
+					# link string
+					list_one.append(tds[0].a.string.strip())
+					# quantity
+					list_one.append(tds[4].string.strip())
 					
-				self.item_counter += 1
-				
-			self.recursive_get_next_page_content(res)
+					# if exists then add to dict
+					if list_one[0] in self.dict_all.iterkeys():  # if company exsit
+						self.dict_all[list_one[0]].append(list_one)
+					else:
+						list_to_insert = []
+						list_to_insert.append(list_one)
+						self.dict_all[list_one[0]] = list_to_insert
+						
+					self.item_counter += 1
+					
+				self.recursive_get_next_page_content(res)
 	
 	def recursive_get_next_page_content(self, BeautifulSoup_obj):
 		this_page = BeautifulSoup_obj.select("#content_gvPosiList_lblPageIndex")[0].string

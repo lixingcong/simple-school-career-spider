@@ -17,28 +17,33 @@ class SCHOOL_SJTU(SCHOOL_BASE):
 	def recursive_get_each_entry(self):
 		if self.content_original:
 			res = BeautifulSoup(self.content_original, "html.parser")
-			lis = res.select('.z_newsl li')
-
-			for li in lis[1:]:
-				list_one = []
-				divs = list(li.find_all('div'))
-				# company name + date
-				list_one.append(divs[2].string[5:] + divs[0].a.string)
-				# link
-				fake_link = str(divs[1].a['onclick']).strip()
-				list_one.append(self.get_real_link(fake_link))
-				# job name
-				list_one.append(divs[1].a.string.strip())
-
-				# if company exists then add to dict
-				if list_one[0] in self.dict_all.iterkeys():
-					self.dict_all[list_one[0]].append(list_one)
-				else:
-					list_to_insert = []
-					list_to_insert.append(list_one)
-					self.dict_all[list_one[0]] = list_to_insert
-				
-				self.item_counter+=1
+			try:
+				lis = res.select('.z_newsl li')
+			except Exception,e:
+				print e
+				return None
+			
+			if lis:
+				for li in lis[1:]:
+					list_one = []
+					divs = list(li.find_all('div'))
+					# company name + date
+					list_one.append(divs[2].string[5:] + divs[0].a.string)
+					# link
+					fake_link = str(divs[1].a['onclick']).strip()
+					list_one.append(self.get_real_link(fake_link))
+					# job name
+					list_one.append(divs[1].a.string.strip())
+	
+					# if company exists then add to dict
+					if list_one[0] in self.dict_all.iterkeys():
+						self.dict_all[list_one[0]].append(list_one)
+					else:
+						list_to_insert = []
+						list_to_insert.append(list_one)
+						self.dict_all[list_one[0]] = list_to_insert
+					
+					self.item_counter+=1
 	
 	def convert_to_table(self):
 		self.add_title_to_content()

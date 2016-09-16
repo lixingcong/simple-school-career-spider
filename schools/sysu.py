@@ -45,48 +45,49 @@ class SCHOOL_SYSU(SCHOOL_BASE):
 			res = BeautifulSoup(self.content_original, "html.parser")
 			table_original = res.find('table', {'class':'grid pager'})
 			
-			today = datetime.datetime.today()
-			trs = table_original.find_all('tr')
-			for tr in trs[3:]:
-				list_one = []
-				tds = list(tr.find_all('td'))
-				date_and_time = tds[1].span.string.strip().split()
-				# date comparasion
-				# http://stackoverflow.com/questions/1831410/python-time-comparison
-				hold_date = self.format_date(date_and_time[0], '/')
-				hold_date_datetime_object = today.replace(month=int(hold_date[:2]), day=int(hold_date[-2:]))
-				if hold_date_datetime_object < today:
-					break
-				
-				# fake link
-				fake_link = tds[0].a['href']
-				try:
-					good_link = self.get_real_link(fake_link)
-				except:
-					continue
-				if good_link is None:
-					continue
-				
-				# date
-				list_one.append(hold_date)
-				# job name
-				list_one.append(tds[0].a.string.strip())
-				# location
-				list_one.append(tds[2].span.string.strip())
-				# time
-				list_one.append(self.format_time(date_and_time[1], ':'))
-				# real link
-				list_one.append(good_link)
-				
-				# if exists then add to dict
-				if list_one[0] in self.dict_all.iterkeys():  # if date exsit
-					self.dict_all[list_one[0]].append(list_one)
-				else:
-					list_to_insert = []
-					list_to_insert.append(list_one)
-					self.dict_all[list_one[0]] = list_to_insert
-				
-				self.item_counter += 1
+			if table_original:
+				today = datetime.datetime.today()
+				trs = table_original.find_all('tr')
+				for tr in trs[3:]:
+					list_one = []
+					tds = list(tr.find_all('td'))
+					date_and_time = tds[1].span.string.strip().split()
+					# date comparasion
+					# http://stackoverflow.com/questions/1831410/python-time-comparison
+					hold_date = self.format_date(date_and_time[0], '/')
+					hold_date_datetime_object = today.replace(month=int(hold_date[:2]), day=int(hold_date[-2:]))
+					if hold_date_datetime_object < today:
+						break
+					
+					# fake link
+					fake_link = tds[0].a['href']
+					try:
+						good_link = self.get_real_link(fake_link)
+					except:
+						continue
+					if good_link is None:
+						continue
+					
+					# date
+					list_one.append(hold_date)
+					# job name
+					list_one.append(tds[0].a.string.strip())
+					# location
+					list_one.append(tds[2].span.string.strip())
+					# time
+					list_one.append(self.format_time(date_and_time[1], ':'))
+					# real link
+					list_one.append(good_link)
+					
+					# if exists then add to dict
+					if list_one[0] in self.dict_all.iterkeys():  # if date exsit
+						self.dict_all[list_one[0]].append(list_one)
+					else:
+						list_to_insert = []
+						list_to_insert.append(list_one)
+						self.dict_all[list_one[0]] = list_to_insert
+					
+					self.item_counter += 1
 				
 	def convert_to_table(self):
 		self.add_title_to_content()

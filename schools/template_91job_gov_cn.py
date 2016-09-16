@@ -25,6 +25,7 @@ class SCHOOL_91JOB_GOV_CN(SCHOOL_BASE):
 		if self.content_original:
 			res = BeautifulSoup(self.content_original, "html.parser")
 			list1 = res.find_all('ul', {'class':'infoList teachinList'})
+			
 			for i in list1:
 				fuck = BeautifulSoup(str(i), 'lxml')
 				list_each_course = list(fuck.find_all('li'))

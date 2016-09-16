@@ -35,37 +35,44 @@ class SCHOOL_NJU(SCHOOL_BASE):
 		if self.content_original:
 			res = BeautifulSoup(self.content_original, "html.parser")
 			res_links = res.find_all('span', {'class':'article'})
-			res_positions = res.find_all('span', {'style':'float:right'})
-			index = 0
-			for res_link in res_links:
-				list_one = []
-				list_one.append(res_link.a['href'].strip())  # link
-				list_one.append(res_link.a.string.strip())  # name
-				tmp_strings = res_positions[index].string.split()
-				list_one.append(tmp_strings[0])  # location
-				
-				date_ = (tmp_strings[1])  # date
-				if date_.startswith(u'201'):  # 2016  2017 ...
-					list_one.append(self.format_date(date_, '-'))
-				else:
-					list_one.append(date_)
+			
+			try:
+				res_positions = res.find_all('span', {'style':'float:right'})
+			except Exception,e:
+				print e
+				return None
+			
+			if res_positions:
+				index = 0
+				for res_link in res_links:
+					list_one = []
+					list_one.append(res_link.a['href'].strip())  # link
+					list_one.append(res_link.a.string.strip())  # name
+					tmp_strings = res_positions[index].string.split()
+					list_one.append(tmp_strings[0])  # location
 					
-				list_one.append(tmp_strings[2])  # time				
+					date_ = (tmp_strings[1])  # date
+					if date_.startswith(u'201'):  # 2016  2017 ...
+						list_one.append(self.format_date(date_, '-'))
+					else:
+						list_one.append(date_)
+						
+					list_one.append(tmp_strings[2])  # time				
+					
+					# if exists then add to dict
+					if list_one[3] in self.dict_all.iterkeys():
+						self.dict_all[list_one[3]].append(list_one)
+					else:
+						list_to_insert = []
+						list_to_insert.append(list_one)
+						self.dict_all[list_one[3]] = list_to_insert
+					
+					index += 1
 				
-				# if exists then add to dict
-				if list_one[3] in self.dict_all.iterkeys():
-					self.dict_all[list_one[3]].append(list_one)
-				else:
-					list_to_insert = []
-					list_to_insert.append(list_one)
-					self.dict_all[list_one[3]] = list_to_insert
+				self.item_counter += index
 				
-				index += 1
-			
-			self.item_counter += index
-			
-			# 递归抓取
-			self.recursive_get_next_page_content(res)
+				# 递归抓取
+				self.recursive_get_next_page_content(res)
 			
 	def recursive_get_next_page_content(self, BeautifulSoup_obj):
 		nav_links = BeautifulSoup_obj.find_all('a', {'style':'width:50px;color:#0082e7;'})
