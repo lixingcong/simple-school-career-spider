@@ -23,7 +23,8 @@ def add_serval_school_to_HTML_body(input_school_list, HTML_title):
 		content += u'<h2>' + HTML_title + u'</h2>'
 		# update time
 		content += u'<p>更新时间：' + time.strftime("%Y-%m-%d %H:%M") + u'</p>'
-		
+		# footer
+		content += u'<p>由<a href="http://lixingcong.github.io">Lixingcong</a>使用python强力驱动。本自动爬虫程序已开源：<a href="https://github.com/lixingcong/simple-school-career-spider">simple-school-career-spider</a>，支持邮件自动投递</p>'		
 		# build a navigator table link
 		content += u'<h3>首页导航</h3><table><tr><th>学校:点击直达</th><th>招聘信息</th></tr>'
 		for i in input_school_list:
@@ -41,8 +42,6 @@ def add_serval_school_to_HTML_body(input_school_list, HTML_title):
 		
 		# school details
 		content += school_content
-		# footer
-		content += u'<p>由<a href="http://lixingcong.github.io">Lixingcong</a>使用python强力驱动。Github仓库：<a href="https://github.com/lixingcong/simple-school-career-spider">simple-school-career-spider</a></p>'
 		# end of HTML
 		content += u'</body></html>' 
 		
