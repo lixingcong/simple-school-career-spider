@@ -65,7 +65,7 @@ class SCHOOL_91JOB_GOV_CN(SCHOOL_BASE):
 			self.recursive_get_each_entry()
 					
 	def convert_to_table(self):
-		self.add_title_to_content()
+		self.add_title_start_to_content()
 		if self.dict_all == {}:
 			self.content += u'<p>抓取内容为空</p>'
 		else:
@@ -82,5 +82,5 @@ class SCHOOL_91JOB_GOV_CN(SCHOOL_BASE):
 					self.content += u'<th>' + i[4] + u'</th></tr>'
 					is_firstline = False
 			self.content += u'</table>'
-		self.add_homepage_link_to_content()
+		self.add_title_end_to_content()
 		

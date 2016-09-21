@@ -105,7 +105,7 @@ class SCHOOL_SHU(SCHOOL_BASE):
 			
 	
 	def convert_to_table(self):
-		self.add_title_to_content()
+		self.add_title_start_to_content()
 		if self.dict_all == {}:
 			self.content += u'<p>抓取内容为空</p>'
 		else:
@@ -122,7 +122,7 @@ class SCHOOL_SHU(SCHOOL_BASE):
 					self.content += u'<th>' + i[3] + u'</th></tr>'
 					is_firstline = False
 			self.content += u'</table>'
-		self.add_homepage_link_to_content()
+		self.add_title_end_to_content()
 			
 	def find_real_VIEWSTATE_and_EVENTVALIDATION(self):
 		self.viewstate = self.re_program_viewstate.findall(self.content_original)[0][12:-1]
