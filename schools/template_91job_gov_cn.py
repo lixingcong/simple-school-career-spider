@@ -9,7 +9,7 @@ Created on 2016年8月30日
 '''
 from bs4 import BeautifulSoup
 from schools.school_base import SCHOOL_BASE
-import requests
+import datetime
 
 class SCHOOL_91JOB_GOV_CN(SCHOOL_BASE):	
 	def format_date(self, input_string, split_symbol):
@@ -36,7 +36,10 @@ class SCHOOL_91JOB_GOV_CN(SCHOOL_BASE):
 				
 				date_ = list_each_course[4].string[:10].strip()  # 日期
 				if date_.startswith(u'201'): # 2016, 2017....
-					list_one.append(self.format_date(date_, '-'))
+					tmp_date=self.format_date(date_, '-')
+					weekday_num=self.today.replace(month=int(tmp_date[:2]), day=int(tmp_date[-2:])).weekday()
+					
+					list_one.append(tmp_date+u'<br>周'+self.weekday[weekday_num])
 				else:
 					list_one.append(date_)
 					

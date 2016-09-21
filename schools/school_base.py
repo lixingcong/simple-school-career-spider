@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import requests
+import datetime
 
 class SCHOOL_BASE(object):
 	def __init__(self, title, abbr, host, url, isFromLocal=False):
@@ -19,6 +20,8 @@ class SCHOOL_BASE(object):
 		self.isFromLocal = isFromLocal
 		self.dict_all = {}
 		self.item_counter = 0
+		self.today = datetime.datetime.today()
+		self.weekday = [u'一', u'二', u'三', u'四', u'五', u'六', u'日']
 		
 	def open_url_and_get_page(self, link=None):
 		# open page and it should be decoded here
