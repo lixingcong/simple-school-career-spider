@@ -38,7 +38,7 @@ class SCHOOL_NJU(SCHOOL_BASE):
 			
 			try:
 				res_positions = res.find_all('span', {'style':'float:right'})
-			except Exception,e:
+			except Exception, e:
 				print e
 				return None
 			
@@ -53,7 +53,9 @@ class SCHOOL_NJU(SCHOOL_BASE):
 					
 					date_ = (tmp_strings[1])  # date
 					if date_.startswith(u'201'):  # 2016  2017 ...
-						list_one.append(self.format_date(date_, '-'))
+						tmp_date = self.format_date(date_, '-')
+						weekday_num = self.today.replace(month=int(tmp_date[:2]), day=int(tmp_date[-2:])).weekday()
+						list_one.append(tmp_date + u'<br>周' + self.weekday[weekday_num])
 					else:
 						list_one.append(date_)
 						

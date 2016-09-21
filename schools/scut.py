@@ -45,7 +45,9 @@ class SCHOOL_SCUT(SCHOOL_BASE):
 					list_one = []
 					date_and_time = li.div.string.strip().split()
 					# date
-					list_one.append(self.format_date(date_and_time[0], '-'))
+					tmp_date=self.format_date(date_and_time[0], '-')
+					weekday_num = self.today.replace(month=int(tmp_date[:2]), day=int(tmp_date[-2:])).weekday()
+					list_one.append(tmp_date + u'<br>周' + self.weekday[weekday_num])
 					# time
 					list_one.append(date_and_time[1])
 					# link

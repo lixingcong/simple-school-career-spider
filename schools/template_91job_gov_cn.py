@@ -35,11 +35,10 @@ class SCHOOL_91JOB_GOV_CN(SCHOOL_BASE):
 				list_one.append(list_each_course[3].string.strip())  # 公教地点
 				
 				date_ = list_each_course[4].string[:10].strip()  # 日期
-				if date_.startswith(u'201'): # 2016, 2017....
-					tmp_date=self.format_date(date_, '-')
-					weekday_num=self.today.replace(month=int(tmp_date[:2]), day=int(tmp_date[-2:])).weekday()
-					
-					list_one.append(tmp_date+u'<br>周'+self.weekday[weekday_num])
+				if date_.startswith(u'201'):  # 2016, 2017....
+					tmp_date = self.format_date(date_, '-')
+					weekday_num = self.today.replace(month=int(tmp_date[:2]), day=int(tmp_date[-2:])).weekday()
+					list_one.append(tmp_date + u'<br>周' + self.weekday[weekday_num])
 				else:
 					list_one.append(date_)
 					

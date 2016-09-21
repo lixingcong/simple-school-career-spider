@@ -69,7 +69,8 @@ class SCHOOL_SYSU(SCHOOL_BASE):
 						continue
 					
 					# date
-					list_one.append(hold_date)
+					weekday_num = self.today.replace(month=int(hold_date[:2]), day=int(hold_date[-2:])).weekday()
+					list_one.append(hold_date + u'<br>周' + self.weekday[weekday_num])
 					# job name
 					list_one.append(tds[0].a.string.strip())
 					# location
