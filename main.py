@@ -14,7 +14,7 @@ def add_serval_school_to_HTML_body(input_school_list, HTML_title):
 		school_content = u''
 		
 		# begin of HTML
-		content = u'<html><head><meta charset="utf-8"><script></script>'		
+		content = u'<html><head><meta charset="utf-8"><script hhh="lxc"></script>'		
 		# CSS style
 		content += u'<style>table, th, td { border: 1px solid #99cccc; text-align: left;}h3 { background: #99ccff; text-indent:0.6em}</style>'
 		# begin of body
