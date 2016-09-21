@@ -79,7 +79,7 @@ class SCHOOL_SCUT(SCHOOL_BASE):
 		if self.dict_all == {}:
 			self.content += u'<p>抓取内容为空</p>'
 		else:
-			self.content += u'<table>'
+			self.add_table_start_to_content()
 			for list1 in sorted(self.dict_all.iterkeys()):
 				len1 = len(self.dict_all[list1])
 				is_firstline = True
@@ -90,7 +90,7 @@ class SCHOOL_SCUT(SCHOOL_BASE):
 					self.content += u'<th><a href="' + self.host + i[2] + u'">' + i[3] + u'</a></th>'
 					self.content += u'<th>' + i[1] + u'</th></tr>'
 					is_firstline = False
-			self.content += u'</table>'
+			self.add_table_end_to_content()
 		self.add_homepage_link_to_content()
 		
 	def format_date(self, input_string, split_symbol):

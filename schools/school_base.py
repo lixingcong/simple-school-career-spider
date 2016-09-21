@@ -74,7 +74,13 @@ class SCHOOL_BASE(object):
 		return self.abbr
 	
 	def add_title_to_content(self):
-		self.content += (u'<a name="' + self.abbr + u'"></a><h3>' + self.title + u'</h3>')
+		self.content += (u'<h3>' + self.title + u'</h3>')
 		
 	def add_homepage_link_to_content(self):
 		self.content += u'<p><a href="#">回到首页</a></p>'
+		
+	def add_table_start_to_content(self):
+		self.content += u'<div id="' + self.abbr + u'" class="school"><table>'
+		
+	def add_table_end_to_content(self):
+		self.content += u'</table></div>'
