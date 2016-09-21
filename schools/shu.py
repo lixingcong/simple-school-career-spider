@@ -109,7 +109,7 @@ class SCHOOL_SHU(SCHOOL_BASE):
 		if self.dict_all == {}:
 			self.content += u'<p>抓取内容为空</p>'
 		else:
-			self.content += u'<table>'
+			self.add_table_start_to_content()
 			self.content += u'<tr><th>公司 发布日期</th><th>职位（学历：本科）</th><th>人数</th></tr>'
 			for list1 in reversed(sorted(self.dict_all.iterkeys())):
 				len1 = len(self.dict_all[list1])
@@ -121,7 +121,7 @@ class SCHOOL_SHU(SCHOOL_BASE):
 					self.content += u'<th><a href="' + self.host + i[1][1:] + u'">' + i[2] + u'</a></th>'
 					self.content += u'<th>' + i[3] + u'</th></tr>'
 					is_firstline = False
-			self.content += u'</table>'
+			self.add_table_end_to_content()
 		self.add_title_end_to_content()
 			
 	def find_real_VIEWSTATE_and_EVENTVALIDATION(self):

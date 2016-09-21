@@ -14,7 +14,7 @@ def add_serval_school_to_HTML_body(input_school_list, HTML_title):
 		school_content = u''
 		
 		# begin of HTML
-		content = u'<html><head><meta charset="utf-8"><script hhh="lxc"></script>'		
+		content = u'<html><head><meta charset="utf-8"><script src="/javascript/select.js"></script>'
 		# CSS style
 		content += u'<style>table, th, td { border: 1px solid #99cccc; text-align: left;}h3 { background: #99ccff; text-indent:0.6em}</style>'
 		# begin of body
@@ -26,12 +26,12 @@ def add_serval_school_to_HTML_body(input_school_list, HTML_title):
 		# footer
 		content += u'<p>由<a href="http://lixingcong.github.io">Lixingcong</a>使用python强力驱动。本自动爬虫程序已开源：<a href="https://github.com/lixingcong/simple-school-career-spider">simple-school-career-spider</a>，支持邮件自动投递</p>'		
 		# build a navigator table link
-		content += u'<h3>首页导航</h3><table><tr><th>选择</th><th>学校</th><th>招聘信息</th></tr>'
+		content += u'<h3>首页导航</h3><table><tr><th>是否显示</th><th>学校</th><th>招聘信息</th></tr>'
 		for i in input_school_list:
 			try:
 				school_content += i.get_HTML()
 				# Homepage Navigator
-				content += u'<tr><th><input type="checkbox" id="_' + i.get_school_abbreviation() + u'" onclick="doPostBack(this);"></th><th>' + i.get_title() + u'</th><th>' + i.get_item_counter() + u'</th></tr>'
+				content += u'<tr><th><input class="mycheck" type="checkbox" id="_' + i.get_school_abbreviation() + u'" onclick="doPostBack(this);"></th><th>' + i.get_title() + u'</th><th>' + i.get_item_counter() + u'</th></tr>'
 			except Exception, exc:
 				school_content += u'<p style="background: #ff6666">' + i.get_title() + u': error occurs</p>'
 				content += u'<tr><th>' + i.get_title() + u'</th><th>出错</th></tr>'
